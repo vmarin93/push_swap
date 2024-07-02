@@ -6,10 +6,11 @@
 /*   By: vmarin <vmarin@student.42london.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:09:19 by vmarin            #+#    #+#             */
-/*   Updated: 2024/07/02 18:59:17 by vmarin           ###   ########.fr       */
+/*   Updated: 2024/07/02 19:04:56 by vmarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//
 // Check for input. If no input, return the prompt to the user
 // Sanitize the input. Make sure all arguments are integers and fit within the int type and 
 	// that there are no duplicate integers in the input
