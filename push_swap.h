@@ -10,4 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
 
+int ft_isspace(char c);
+int ft_isdigit(char c);
+int ft_strtoi(const char *str, char **endptr);
+
+#endif

@@ -38,11 +38,13 @@
 	// rrr : rra and rrb at the same time.
 // create an array that is going to store all the operations we perform whilst sorting the input
 
+#include "push_swap.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <limits.h>
 
-int	ft_strlen(char *str)
+int ft_strlen(char *str)
 {
 	int	i;
 
@@ -52,56 +54,55 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
+	int	*input;
+	char	*endptr;
+	int	i;
+
 	if (argc < 2)
 	{
-		exit(1);
+		return (1);
 	}
-	int	i = 1;
+	input = malloc(sizeof(int) * (argc - 1));
+	if (input == NULL)
+	{
+		return (1);
+	}
+	i = 1;
 	while (i < argc)
 	{
-		int	arg_len = ft_strlen(argv[i]);
-		if (arg_len > 10)
+		long	number;
+		number = (ft_strtoi(argv[i], &endptr));
+		if (*endptr != '\0'|| endptr == argv[i] || number == LONG_MAX|| number == LONG_MIN)
 		{
 			write(2, "Error\n", 6);
 			exit(1);
 		}
-		int	j = 0;
-		while (j < arg_len)
-		{
-			if (argv[i][j] < '0' || argv[i][j] > '9')
-			{
-				write(2, "Error\n", 6);
-				exit(1);
-			}
-			j++;
-		}
+		input[i] = number;
+		i++;
+	}
+	i = 0;
+	while (i < argc - 1)
+	{
+		int	j;
 		j = i + 1;
 		while (j < argc)
 		{
-			int	len_i = ft_strlen(argv[i]);
-			int	len_j = ft_strlen(argv[j]);
-			if (len_i < len_j || len_i > len_j)
-				continue;
-			else 
+			if (input[i] == input[j])
 			{
-				int	k = 0;
-				while (k < len_i)
-				{
-					if (argv[i][k] != argv[j][k])
-						break;
-					k++;
-				}
-				if (k == len_i)
-				{
-					write(2, "Error\n", 6);
-					exit(1);
-				}
+				write(2, "Error\n", 6);
+				free(input);
+				exit(1);
 			}
 			j++;
 		}
 		i++;
 	}
-	printf("groovy");
+	while (argc > 1)
+	{
+		printf("%d\n", input[argc - 1]);
+		argc--;
+	}
+	free(input);
 }
