@@ -17,4 +17,24 @@ int ft_isspace(char c);
 int ft_isdigit(char c);
 int ft_strtoi(const char *str, char **endptr);
 
+typedef struct {
+	int	*numbers;
+	int	top;
+	int	size;
+}Stack;
+
+Stack *create_stack(int size);
+
+void free_stack(Stack *stack);
+
+int full_stack(Stack *stack);
+
+int empty_stack(Stack *stack);
+
+int peek(Stack *stack);
+
+int push(Stack *stack, int number);
+
+int pop(Stack *stack);
+
 #endif

@@ -56,6 +56,12 @@ int ft_strlen(char *str)
 
 int main(int argc, char *argv[])
 {
+	Stack *stack_a = create_stack(argc -1);
+	if (stack_a == NULL)
+		return (1);
+	Stack *stack_b = create_stack(argc -1);
+	if (stack_b == NULL)
+		return (1);
 	int	*input;
 	char	*endptr;
 	int	i;
@@ -99,10 +105,5 @@ int main(int argc, char *argv[])
 		}
 		i++;
 	}
-	while (argc > 1)
-	{
-		printf("%d\n", input[argc - 1]);
-		argc--;
-	}
-	free(input);
+	i = argc - 1;
 }
