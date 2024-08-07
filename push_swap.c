@@ -133,7 +133,7 @@ int steps_to_top(Stack *stack, int value)
 	return (steps);
 }
 
-Stack *sort_stack(Stack *stack_a, Stack *stack_b)
+Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 {
 	int	temp;
 	int	best_move;
@@ -151,16 +151,19 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b)
 		{
 			swap_top(stack_a);
 			write(1, "sa\n", 3); 
+			*op_count += 1;
 			temp = pop(stack_a);
 		}
 		else if(best_move == 0)
 		{
 			rev_rotate_stack(stack_a);
 			write(1, "rra\n", 4);
+			*op_count += 1;
 			temp = pop(stack_a);
 		}
 		push(stack_b, temp);
 		write(1, "pb\n", 3);
+		*op_count += 1;
 	}
 	while(!empty_stack(stack_b) && !is_rev_sorted(stack_b))
 	{
@@ -175,6 +178,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b)
 			{
 				rev_rotate_stack(stack_b);
 				write(1, "rrb\n", 4);
+				*op_count += 1;
 			}
 		}
 		else
@@ -183,15 +187,18 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b)
 			{
 				rotate_stack(stack_b);
 				write(1, "rb\n", 3);
+				*op_count += 1;
 			}
 		}
 		push(stack_a, pop(stack_b));
 		write(1, "pa\n", 3);
+		*op_count += 1;
 	}
 	while (!empty_stack(stack_b))
 	{
 		push(stack_a, pop(stack_b));
 		write(1, "pa\n", 3);
+		*op_count += 1;
 	}
 	return (stack_a);
 }
@@ -207,7 +214,9 @@ int main(int argc, char *argv[])
 	int	*input;
 	char	*endptr;
 	int	i;
+	int	op_count;
 
+	op_count = 0;
 	if (argc < 2)
 	{
 		return (1);
@@ -253,14 +262,10 @@ int main(int argc, char *argv[])
 		i--;
 	}
 	free(input);
-	i = argc - 2;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
+	sort_stack(stack_a, stack_b, &op_count);
 	printf("\n");
-	sort_stack(stack_a, stack_b);
+	printf("Stack sorted using %d operations", op_count);
+	printf("\n");
 	i = argc - 2;
 	while (i >= 0)
 	{
