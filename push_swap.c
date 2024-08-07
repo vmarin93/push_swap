@@ -44,14 +44,156 @@
 #include <unistd.h>
 #include <limits.h>
 
-int ft_strlen(char *str)
+int	is_sorted(Stack *stack)
 {
+	int	value;
 	int	i;
 
-	i = 0;
-	while (str[i] != '\0')
+	if (!stack)
+		return (0);
+	value = stack->numbers[stack->top];
+	i = stack->size - 1;
+	while(i > 0)
+	{
+		if (stack->numbers[i - 1] < value)
+			return (0);
+		value = stack->numbers[i - 1];
+		i--;
+	}
+	return (1);
+}
+
+int	is_rev_sorted(Stack *stack)
+{
+	int	value;
+	int	i;
+
+	if (!stack)
+		return (0);
+	value = stack->numbers[stack->top];
+	i = stack->size - 1;
+	while(i > 0)
+	{
+		if (stack->numbers[i - 1] > value)
+			return (0);
+		value = stack->numbers[i - 1];
+		i--;
+	}
+	return (1);
+}
+
+int get_best_move(Stack *stack)
+{
+	int	best_move;
+	int	min_value;
+
+	if (empty_stack(stack))
+		return (-1);
+
+	best_move = 0;
+	min_value = stack->numbers[0];
+	if (stack->top > 0 && stack->numbers[stack->top] < min_value)
+	{
+		min_value = stack->numbers[stack->top];
+		best_move = stack->top;
+	}
+	if (stack->top > 1 && stack->numbers[stack->top - 1] < min_value)
+	{
+		min_value = stack->numbers[stack->top - 1];
+		best_move = stack->top - 1;
+	}
+	return(best_move);
+}
+
+int find_largest(Stack *stack)
+{
+	int	largest;
+	int	i;
+
+	if (!stack)
+		return(-1);
+	largest = stack->numbers[0];
+	i = 1;
+	while (i <= stack->top)
+	{
+		if (stack->numbers[i] > largest)
+			largest = stack->numbers[i];
 		i++;
-	return (i);
+	}
+	return (largest);
+}
+
+int steps_to_top(Stack *stack, int value)
+{
+	int	steps;
+
+	steps = 0;
+	while (steps < stack->top && stack->numbers[steps] != value)
+		steps++;
+	return (steps);
+}
+
+Stack *sort_stack(Stack *stack_a, Stack *stack_b)
+{
+	int	temp;
+	int	best_move;
+	
+	if (is_sorted(stack_a))
+		return (stack_a);
+	while(!empty_stack(stack_a))
+	{
+		best_move = get_best_move(stack_a);
+		if (best_move == -1)
+			break;
+		if (best_move == stack_a->top)
+			temp = pop(stack_a);
+		else if(best_move == stack_a->top - 1)
+		{
+			swap_top(stack_a);
+			write(1, "sa\n", 3); 
+			temp = pop(stack_a);
+		}
+		else if(best_move == 0)
+		{
+			rev_rotate_stack(stack_a);
+			write(1, "rra\n", 4);
+			temp = pop(stack_a);
+		}
+		push(stack_b, temp);
+		write(1, "pb\n", 3);
+	}
+	while(!empty_stack(stack_b) && !is_rev_sorted(stack_b))
+	{
+		int	largest;
+		int	steps;
+
+		largest = find_largest(stack_b);
+		steps = steps_to_top(stack_b, largest);
+		if (steps <= (stack_b->top / 2))
+		{
+			while(peek(stack_b) != largest)
+			{
+				rev_rotate_stack(stack_b);
+				write(1, "rrb\n", 4);
+			}
+		}
+		else
+		{
+			while(peek(stack_b) != largest)
+			{
+				rotate_stack(stack_b);
+				write(1, "rb\n", 3);
+			}
+		}
+		push(stack_a, pop(stack_b));
+		write(1, "pa\n", 3);
+	}
+	while (!empty_stack(stack_b))
+	{
+		push(stack_a, pop(stack_b));
+		write(1, "pa\n", 3);
+	}
+	return (stack_a);
 }
 
 int main(int argc, char *argv[])
@@ -70,30 +212,29 @@ int main(int argc, char *argv[])
 	{
 		return (1);
 	}
-	input = malloc(sizeof(int) * (argc - 1));
-	if (input == NULL)
-	{
+	input = malloc(sizeof(int) * (argc - 1)); 
+	if (input == NULL) 
 		return (1);
-	}
-	i = 1;
-	while (i < argc)
-	{
-		long	number;
-		number = (ft_strtoi(argv[i], &endptr));
-		if (*endptr != '\0'|| endptr == argv[i] || number == LONG_MAX|| number == LONG_MIN)
-		{
-			write(2, "Error\n", 6);
-			exit(1);
-		}
-		input[i] = number;
-		i++;
-	}
 	i = 0;
 	while (i < argc - 1)
 	{
+		long	number;
+		number = (ft_strtoi(argv[i + 1], &endptr));
+		if (*endptr != '\0' || endptr == argv[i + 1] || number == LONG_MAX|| number == LONG_MIN)
+		{
+			write(2, "Error\n", 6);
+			free(input);
+			exit(1);
+		}
+		input[i] = (int)number;
+		i++;
+	}
+	i = 0;
+	while (i < argc - 2)
+	{
 		int	j;
 		j = i + 1;
-		while (j < argc)
+		while (j < argc - 1)
 		{
 			if (input[i] == input[j])
 			{
@@ -105,5 +246,28 @@ int main(int argc, char *argv[])
 		}
 		i++;
 	}
-	i = argc - 1;
+	i = argc - 2;
+	while (i >= 0)
+	{
+		push(stack_a, input[i]);
+		i--;
+	}
+	free(input);
+	i = argc - 2;
+	while (i >= 0)
+	{
+		printf("%d ", stack_a->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	sort_stack(stack_a, stack_b);
+	i = argc - 2;
+	while (i >= 0)
+	{
+		printf("%d ", stack_a->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	free_stack(stack_a);
+	free_stack(stack_b);
 }

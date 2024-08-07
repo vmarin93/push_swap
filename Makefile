@@ -15,6 +15,7 @@ CPPFLAGS = -I${INC_DIR}
 RM = rm -f
 
 all: ${NAME}
+	${RM} ${OBJS}
 
 ${NAME}: ${OBJS}
 	${CC} ${CCFLAGS} ${OBJS} -o ${NAME}

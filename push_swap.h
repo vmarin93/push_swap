@@ -27,14 +27,20 @@ Stack *create_stack(int size);
 
 void free_stack(Stack *stack);
 
-int full_stack(Stack *stack);
+int full_stack(const Stack *stack);
 
-int empty_stack(Stack *stack);
+int empty_stack(const Stack *stack);
 
-int peek(Stack *stack);
+long peek(const Stack *stack);
 
-int push(Stack *stack, int number);
+long push(Stack *stack, int number);
 
-int pop(Stack *stack);
+long pop(Stack *stack);
+
+long swap_top(Stack *stack);
+
+long rotate_stack(Stack *stack);
+
+long rev_rotate_stack(Stack *stack);
 
 #endif
