@@ -82,45 +82,40 @@ int	is_rev_sorted(Stack *stack)
 	return (1);
 }
 
-int get_best_move(Stack *stack)
-{
-	int	best_move;
-	int	min_value;
-
-	if (empty_stack(stack))
-		return (-1);
-
-	best_move = 0;
-	min_value = stack->numbers[0];
-	if (stack->top > 0 && stack->numbers[stack->top] < min_value)
-	{
-		min_value = stack->numbers[stack->top];
-		best_move = stack->top;
-	}
-	if (stack->top > 1 && stack->numbers[stack->top - 1] < min_value)
-	{
-		min_value = stack->numbers[stack->top - 1];
-		best_move = stack->top - 1;
-	}
-	return(best_move);
-}
-
 int find_largest(Stack *stack)
 {
-	int	largest;
+	int	target;
 	int	i;
 
 	if (!stack)
 		return(-1);
-	largest = stack->numbers[0];
+	target = stack->numbers[0];
 	i = 1;
 	while (i <= stack->top)
 	{
-		if (stack->numbers[i] > largest)
-			largest = stack->numbers[i];
+		if (stack->numbers[i] > target)
+			target = stack->numbers[i];
 		i++;
 	}
-	return (largest);
+	return (target);
+}
+
+int find_smallest(Stack *stack)
+{
+	int	smallest;
+	int	i;
+
+	if (!stack)
+		return (-1);
+	smallest = stack->numbers[0];
+	i = 1;
+	while (i <= stack->top)
+	{
+		if (stack->numbers[i] < smallest)
+			smallest = stack->numbers[i];
+		i++;
+	}
+	return (smallest);
 }
 
 int steps_to_top(Stack *stack, int value)
@@ -135,46 +130,98 @@ int steps_to_top(Stack *stack, int value)
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 {
-	int	temp;
-	int	best_move;
-	
-	if (is_sorted(stack_a))
-		return (stack_a);
-	while(!empty_stack(stack_a))
+	while(!empty_stack(stack_a) || !is_sorted(stack_a))
 	{
-		best_move = get_best_move(stack_a);
-		if (best_move == -1)
-			break;
-		if (best_move == stack_a->top)
-			temp = pop(stack_a);
-		else if(best_move == stack_a->top - 1)
+		int	target;
+		int	steps;
+		
+		target = find_smallest(stack_a);
+		steps = steps_to_top(stack_a, target);
+		if (steps == stack_a->top)
+		{
+			push(stack_b, pop(stack_a));
+			write(1, "pb\n", 3);
+			*op_count += 1;
+			continue ;
+		}
+		else if (steps == stack_a->top -1)
 		{
 			swap_top(stack_a);
-			write(1, "sa\n", 3); 
+			write(1, "sa\n", 3);
 			*op_count += 1;
-			temp = pop(stack_a);
 		}
-		else if(best_move == 0)
+		else if (steps < (stack_a->top / 2))
 		{
-			rev_rotate_stack(stack_a);
-			write(1, "rra\n", 4);
-			*op_count += 1;
-			temp = pop(stack_a);
+			while(peek(stack_a) != target)
+			{
+				rev_rotate_stack(stack_a);
+				write(1, "rra\n", 4);
+				*op_count += 1;
+			}
 		}
-		push(stack_b, temp);
+		else
+		{
+			while(peek(stack_a) != target)
+			{
+				rotate_stack(stack_a);
+				write(1, "ra\n", 3);
+				*op_count += 1;
+			}
+		}
+		push(stack_b, pop(stack_a));
 		write(1, "pb\n", 3);
 		*op_count += 1;
 	}
-	while(!empty_stack(stack_b) && !is_rev_sorted(stack_b))
+	if (is_sorted(stack_a))
 	{
-		int	largest;
+		int	temp[stack_a->size];
+		int	temp_size;
+		int	i;
+
+		temp_size = 0;
+		while(!empty_stack(stack_a))
+		{
+			temp[temp_size] = pop(stack_a);
+			temp_size++;
+		}
+		while (!empty_stack(stack_b))
+		{
+			push(stack_a, pop(stack_b));
+			write(1, "pa\n", 3);
+			*op_count += 1;
+		}
+		i = temp_size - 1;	
+		while (i >= 0)
+		{
+			push(stack_a, temp[i]);
+			write(1, "pa\n", 3);
+			*op_count +=1;
+		}
+		return (stack_a);
+	}
+	while(!empty_stack(stack_b) || !is_rev_sorted(stack_b))
+	{
+		int	target;
 		int	steps;
 
-		largest = find_largest(stack_b);
-		steps = steps_to_top(stack_b, largest);
-		if (steps <= (stack_b->top / 2))
+		target = find_largest(stack_b);
+		steps = steps_to_top(stack_b, target);
+		if (steps == stack_b->top)
 		{
-			while(peek(stack_b) != largest)
+			push(stack_a, pop(stack_b));
+			write(1, "pa\n", 3);
+			*op_count += 1;
+			continue ;
+		}
+		else if (steps == stack_b->top -  1)
+		{
+			swap_top(stack_b);
+			write(1, "sb\n", 3);
+			*op_count += 1;
+		}
+		else if (steps < (stack_b->top / 2))
+		{
+			while(peek(stack_b) != target)
 			{
 				rev_rotate_stack(stack_b);
 				write(1, "rrb\n", 4);
@@ -183,7 +230,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		}
 		else
 		{
-			while(peek(stack_b) != largest)
+			while(peek(stack_b) != target)
 			{
 				rotate_stack(stack_b);
 				write(1, "rb\n", 3);
