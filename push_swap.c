@@ -128,6 +128,75 @@ int steps_to_top(Stack *stack, int value)
 	return (steps);
 }
 
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count)
+{
+	int	top;
+	int	bottom;
+	int	middle;
+
+	push(stack_b, pop(stack_a));
+	write(1, "pb\n", 3);
+	*op_count +=1;
+	push(stack_b, pop(stack_a));
+	write(1, "pb\n", 3);
+	*op_count +=1;
+	top = stack_a->numbers[stack_a->top];
+	bottom = stack_a->numbers[0];
+	middle = stack_a->numbers[stack_a->top - 1];
+	printf("top: %d\n", top);
+	printf("bottom: %d\n", bottom);
+	printf("middle: %d\n", middle);
+	if (top < middle && top > bottom)
+	{
+		rev_rotate_stack(stack_a);
+		write(1, "rra\n", 4);
+		*op_count +=1;
+	}
+	else if ((top > middle && top > bottom) && middle > bottom)
+	{
+		swap_top(stack_a);
+		write(1, "sa\n", 3);
+		*op_count +=1;
+		rev_rotate_stack(stack_a);
+		write(1, "rra\n", 4);
+		*op_count +=1;
+	}
+	else if (top < middle && top < bottom)
+	{
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
+		*op_count += 1;
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
+		*op_count += 1;
+		swap_top(stack_a);
+		write(1, "sa\n", 3);
+		*op_count +=1;
+	}
+	printf("top: %d\n", top);
+	printf("bottom: %d\n", bottom);
+	printf("middle: %d\n", middle);
+	if (!(peek(stack_b) < peek(stack_a)))
+	{
+		swap_top(stack_b);
+		write(1, "sb\n", 3);
+		*op_count +=1;
+	}
+	while (!empty_stack(stack_b))
+	{
+		push(stack_a, pop(stack_b));
+		write(1, "pa\n", 3);
+		*op_count +=1;
+	}
+	while(!is_sorted(stack_a))
+	{
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
+		*op_count +=1;
+	}
+	return (stack_a);
+}
+
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 {
 	while(!empty_stack(stack_a) || !is_sorted(stack_a))
@@ -309,7 +378,8 @@ int main(int argc, char *argv[])
 		i--;
 	}
 	free(input);
-	sort_stack(stack_a, stack_b, &op_count);
+	//sort_stack(stack_a, stack_b, &op_count);
+	sort_size_5(stack_a, stack_b, &op_count);
 	printf("\n");
 	printf("Stack sorted using %d operations", op_count);
 	printf("\n");
