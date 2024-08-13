@@ -1,4 +1,4 @@
-SRC = push_swap.c ft_strtoi.c ft_stack.c
+SRC = push_swap.c ft_strtoi.c ft_stack.c hardcoded_sorts.c
 
 OBJS := ${SRC:%.c=%.o}
 

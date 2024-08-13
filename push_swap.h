@@ -43,4 +43,20 @@ long rotate_stack(Stack *stack);
 
 long rev_rotate_stack(Stack *stack);
 
+Stack *sort_size_3(Stack *stack_a, int *op_count);
+
+Stack *sort_size_4(Stack *stack_a, Stack *stack_b, int *op_count);
+
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count);
+
+int is_sorted(Stack *stack);
+
+int is_rev_sorted(Stack *stack);
+
+int find_largest(Stack *stack);
+
+int find_smallest(Stack *stack);
+
+int find_steps_to_top(Stack *stack, int value);
+
 #endif

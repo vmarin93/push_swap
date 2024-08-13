@@ -44,7 +44,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-int	is_sorted(Stack *stack)
+int is_sorted(Stack *stack)
 {
 	int	value;
 	int	i;
@@ -63,7 +63,7 @@ int	is_sorted(Stack *stack)
 	return (1);
 }
 
-int	is_rev_sorted(Stack *stack)
+int is_rev_sorted(Stack *stack)
 {
 	int	value;
 	int	i;
@@ -118,7 +118,7 @@ int find_smallest(Stack *stack)
 	return (smallest);
 }
 
-int steps_to_top(Stack *stack, int value)
+int find_steps_to_top(Stack *stack, int value)
 {
 	int	steps;
 
@@ -128,74 +128,6 @@ int steps_to_top(Stack *stack, int value)
 	return (steps);
 }
 
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count)
-{
-	int	top;
-	int	bottom;
-	int	middle;
-
-	push(stack_b, pop(stack_a));
-	write(1, "pb\n", 3);
-	*op_count +=1;
-	push(stack_b, pop(stack_a));
-	write(1, "pb\n", 3);
-	*op_count +=1;
-	top = stack_a->numbers[stack_a->top];
-	bottom = stack_a->numbers[0];
-	middle = stack_a->numbers[stack_a->top - 1];
-	printf("top: %d\n", top);
-	printf("bottom: %d\n", bottom);
-	printf("middle: %d\n", middle);
-	if (top < middle && top > bottom)
-	{
-		rev_rotate_stack(stack_a);
-		write(1, "rra\n", 4);
-		*op_count +=1;
-	}
-	else if ((top > middle && top > bottom) && middle > bottom)
-	{
-		swap_top(stack_a);
-		write(1, "sa\n", 3);
-		*op_count +=1;
-		rev_rotate_stack(stack_a);
-		write(1, "rra\n", 4);
-		*op_count +=1;
-	}
-	else if (top < middle && top < bottom)
-	{
-		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count += 1;
-		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count += 1;
-		swap_top(stack_a);
-		write(1, "sa\n", 3);
-		*op_count +=1;
-	}
-	printf("top: %d\n", top);
-	printf("bottom: %d\n", bottom);
-	printf("middle: %d\n", middle);
-	if (!(peek(stack_b) < peek(stack_a)))
-	{
-		swap_top(stack_b);
-		write(1, "sb\n", 3);
-		*op_count +=1;
-	}
-	while (!empty_stack(stack_b))
-	{
-		push(stack_a, pop(stack_b));
-		write(1, "pa\n", 3);
-		*op_count +=1;
-	}
-	while(!is_sorted(stack_a))
-	{
-		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count +=1;
-	}
-	return (stack_a);
-}
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 {
@@ -205,7 +137,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		int	steps;
 		
 		target = find_smallest(stack_a);
-		steps = steps_to_top(stack_a, target);
+		steps = find_steps_to_top(stack_a, target);
 		if (steps == stack_a->top)
 		{
 			push(stack_b, pop(stack_a));
@@ -274,7 +206,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		int	steps;
 
 		target = find_largest(stack_b);
-		steps = steps_to_top(stack_b, target);
+		steps = find_steps_to_top(stack_b, target);
 		if (steps == stack_b->top)
 		{
 			push(stack_a, pop(stack_b));
