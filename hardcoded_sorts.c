@@ -1,5 +1,6 @@
 #include "push_swap.h"
 #include <unistd.h>
+#include <stdio.h>
 
 Stack *sort_size_3(Stack *stack_a, int *op_count)
 {
@@ -129,20 +130,23 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count)
 	write(1, "pb\n", 3);
 	*op_count += 1;
 	sort_size_3(stack_a, op_count);
-	if (peek(stack_b) > stack_b->numbers[stack_b->top - 1])
+	push(stack_a, pop(stack_b));
+	write(1, "pa\n", 3);
+	*op_count += 1;
+	if (peek(stack_a) > stack_a->numbers[stack_a->top - 1])
 	{
-		swap_top(stack_b);
-		write(1, "sb\n", 3);
-		*op_count += 1;
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
+		*op_count +=1;
 	}
 	push(stack_a, pop(stack_b));
 	write(1, "pa\n", 3);
 	*op_count += 1;
-	push(stack_a, pop(stack_b));
-	write(1, "pa\n", 3);
-	*op_count += 1;
-	rotate_stack(stack_a);
-	write(1, "rra\n", 4);
-	*op_count +=1;
+	if (peek(stack_a) > stack_a->numbers[stack_a->top - 1])
+	{
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
+		*op_count +=1;
+	}
 	return (stack_a);
 }

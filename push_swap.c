@@ -128,124 +128,212 @@ int find_steps_to_top(Stack *stack, int value)
 	return (steps);
 }
 
+int ft_sum(Stack *stack)
+{
+	int	sum;
+	int	i;
+
+	sum = 0;
+	i = stack->size - 1;
+	while (i >= 0)
+	{
+		sum += stack->numbers[i];
+		i--;
+	}
+	return(sum);
+}
+
+int find_pair(int value, Stack *stack)
+{
+	int	pair;
+	int	i;
+	int	perfect_pairing;
+
+	perfect_pairing = INT_MAX;
+	i = stack->top;
+	while (i >= 0)
+	{
+		if (stack->numbers[i] - value > 0 && stack->numbers[i] - value < perfect_pairing)
+		{
+			pair = stack->numbers[i];
+			perfect_pairing = stack->numbers[i] - value;
+		}
+		i--;
+	}
+	return (pair);
+}
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 {
-	while(!empty_stack(stack_a) || !is_sorted(stack_a))
+	int	mean_value;
+	int	*pairs;
+	int	i;
+	int	j;
+	int	largest_stack_a;
+	
+	largest_stack_a = find_largest(stack_a);
+	i = stack_a->top;
+	while (i >= 0)
 	{
-		int	target;
-		int	steps;
-		
-		target = find_smallest(stack_a);
-		steps = find_steps_to_top(stack_a, target);
-		if (steps == stack_a->top)
+		printf("%d ", stack_a->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	while (stack_a->top > 4)
+	{
+		mean_value = (ft_sum(stack_a) / stack_a->top);
+		if (peek(stack_a) <= mean_value)
 		{
 			push(stack_b, pop(stack_a));
 			write(1, "pb\n", 3);
 			*op_count += 1;
-			continue ;
 		}
-		else if (steps == stack_a->top -1)
+		else
 		{
-			swap_top(stack_a);
-			write(1, "sa\n", 3);
+			rotate_stack(stack_a);
+			write(1, "ra\n", 3);
 			*op_count += 1;
 		}
-		else if (steps < (stack_a->top / 2))
+	}
+	printf("STACK A: ");
+	i = stack_a->top;
+	while (i >= 0)
+	{
+		printf("%d ", stack_a->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	printf("STACK B: ");
+	i = stack_b->top;
+	while (i >= 0)
+	{
+		printf("%d ", stack_b->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	sort_size_5(stack_a, stack_b, op_count);
+	printf("STACK A AFTER SORT 5: ");
+	i = stack_a->top;
+	while (i >= 0)
+	{
+		printf("%d ", stack_a->numbers[i]);
+		i--;
+	}
+	printf("\n");
+	while (!empty_stack(stack_b))
+	{
+		int	steps_stack_a;
+		int	steps_stack_b;
+		int	value_top_a;
+		int	value_top_b;
+		int	total_steps;
+
+
+		pairs = malloc(sizeof(int) * (2 * stack_b->top + 1));
+		if (pairs == NULL)
+			return (NULL);
+		total_steps = INT_MAX;
+		i = 0;
+		j = stack_b->top;
+		while (j >= 0)
 		{
-			while(peek(stack_a) != target)
+			pairs[i] = stack_b->numbers[j];
+			i++;
+			pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+			i++;
+			j--;
+		}
+		i = 0;
+		while (i <= (2 * stack_b->top))
+		{
+			int	current_steps_b;
+			int	current_steps_a;
+			
+			current_steps_b= find_steps_to_top(stack_b, pairs[i]);
+			current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
+			if ((current_steps_b + current_steps_a) < total_steps)
+			{
+				value_top_a = pairs[i + 1];
+				value_top_b = pairs[i];
+				total_steps = current_steps_a + current_steps_b;
+				steps_stack_a = current_steps_a;
+				steps_stack_b = current_steps_b;
+			}
+			i += 2;
+		}
+		free(pairs);
+		while (peek(stack_a) != value_top_a)
+		{
+			if (steps_stack_a > stack_a->top / 2)
+			{
+				rotate_stack(stack_a);
+				write(1, "ra\n", 3);
+				*op_count += 1;
+			}
+			else
 			{
 				rev_rotate_stack(stack_a);
 				write(1, "rra\n", 4);
 				*op_count += 1;
 			}
 		}
-		else
+		while (peek(stack_b) != value_top_b)
 		{
-			while(peek(stack_a) != target)
+			if (steps_stack_b > stack_b->top / 2)
 			{
-				rotate_stack(stack_a);
-				write(1, "ra\n", 3);
+				rotate_stack(stack_b);
+				write(1, "rb\n", 3);
 				*op_count += 1;
 			}
-		}
-		push(stack_b, pop(stack_a));
-		write(1, "pb\n", 3);
-		*op_count += 1;
-	}
-	if (is_sorted(stack_a))
-	{
-		int	temp[stack_a->size];
-		int	temp_size;
-		int	i;
-
-		temp_size = 0;
-		while(!empty_stack(stack_a))
-		{
-			temp[temp_size] = pop(stack_a);
-			temp_size++;
-		}
-		while (!empty_stack(stack_b))
-		{
-			push(stack_a, pop(stack_b));
-			write(1, "pa\n", 3);
-			*op_count += 1;
-		}
-		i = temp_size - 1;	
-		while (i >= 0)
-		{
-			push(stack_a, temp[i]);
-			write(1, "pa\n", 3);
-			*op_count +=1;
-		}
-		return (stack_a);
-	}
-	while(!empty_stack(stack_b) || !is_rev_sorted(stack_b))
-	{
-		int	target;
-		int	steps;
-
-		target = find_largest(stack_b);
-		steps = find_steps_to_top(stack_b, target);
-		if (steps == stack_b->top)
-		{
-			push(stack_a, pop(stack_b));
-			write(1, "pa\n", 3);
-			*op_count += 1;
-			continue ;
-		}
-		else if (steps == stack_b->top -  1)
-		{
-			swap_top(stack_b);
-			write(1, "sb\n", 3);
-			*op_count += 1;
-		}
-		else if (steps < (stack_b->top / 2))
-		{
-			while(peek(stack_b) != target)
+			else
 			{
 				rev_rotate_stack(stack_b);
 				write(1, "rrb\n", 4);
 				*op_count += 1;
 			}
 		}
-		else
+		while (peek(stack_a) != value_top_a && peek(stack_b) != value_top_b)
 		{
-			while(peek(stack_b) != target)
+			if (steps_stack_a > stack_a->top / 2 && steps_stack_b > stack_b->top / 2)
 			{
+				rotate_stack(stack_a);
 				rotate_stack(stack_b);
-				write(1, "rb\n", 3);
+				write(1, "rr\n", 3);
+				*op_count += 1;
+			}
+			else
+			{
+				rev_rotate_stack(stack_a);
+				rev_rotate_stack(stack_b);
+				write(1, "rrr\n", 4);
 				*op_count += 1;
 			}
 		}
 		push(stack_a, pop(stack_b));
 		write(1, "pa\n", 3);
 		*op_count += 1;
+		
 	}
-	while (!empty_stack(stack_b))
+	int smallest_stack_a = find_smallest(stack_a);
+	while (peek(stack_a) != smallest_stack_a)
 	{
-		push(stack_a, pop(stack_b));
-		write(1, "pa\n", 3);
+		if (find_steps_to_top(stack_a, smallest_stack_a) > stack_a->top / 2)
+		{
+			rotate_stack(stack_a);
+			write(1, "ra\n", 3);
+			*op_count += 1;
+		}
+		else
+		{
+			rev_rotate_stack(stack_a);
+			write(1, "rra\n", 4);
+			*op_count += 1;
+		}
+	}
+	while (stack_a->numbers[0] != largest_stack_a)
+	{
+		rotate_stack(stack_a);
+		write(1, "ra\n", 3);
 		*op_count += 1;
 	}
 	return (stack_a);
@@ -310,12 +398,11 @@ int main(int argc, char *argv[])
 		i--;
 	}
 	free(input);
-	//sort_stack(stack_a, stack_b, &op_count);
-	sort_size_5(stack_a, stack_b, &op_count);
+	sort_stack(stack_a, stack_b, &op_count);
 	printf("\n");
 	printf("Stack sorted using %d operations", op_count);
 	printf("\n");
-	i = argc - 2;
+	i = stack_a->size - 1;
 	while (i >= 0)
 	{
 		printf("%d ", stack_a->numbers[i]);
