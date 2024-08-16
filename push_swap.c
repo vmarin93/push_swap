@@ -196,7 +196,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 	while (stack_a->top > 4)
 	{
 		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
-		if (peek(stack_a) <= mean_value)
+		if (peek(stack_a) < mean_value)
 		{
 			push(stack_b, pop(stack_a));
 			write(1, "pb\n", 3);
@@ -264,7 +264,14 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		{
 			pairs[i] = stack_b->numbers[j];
 			i++;
-			pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+			if (find_pair(stack_b->numbers[j], stack_a) != -1)
+			{
+				pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+			}
+			else
+			{
+				pairs[i] = stack_b->numbers[j] - 1;
+			}
 			i++;
 			j--;
 		}
@@ -300,7 +307,9 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		free(pairs);
 		while (peek(stack_a) != value_top_a)
 		{
-			if (steps_stack_a < stack_a->top / 2)
+			if (value_top_a == -1)
+				break ;
+			if (steps_stack_a <= stack_a->top / 2)
 			{
 				rotate_stack(stack_a);
 				write(1, "ra\n", 3);
@@ -315,7 +324,9 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		}
 		while (peek(stack_b) != value_top_b)
 		{
-			if (steps_stack_b < stack_b->top / 2)
+			if (value_top_b == -1)
+				break;
+			if (steps_stack_b <= stack_b->top / 2)
 			{
 				rotate_stack(stack_b);
 				write(1, "rb\n", 3);
@@ -328,6 +339,9 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 				*op_count += 1;
 			}
 		}
+		push(stack_a, pop(stack_b));
+		write(1, "pa\n", 3);
+		*op_count += 1;
 		printf("STACK A: ");
 		i = stack_a->top;
 		while (i >= 0)
@@ -344,26 +358,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			i--;
 		}
 		printf("\n");
-		push(stack_a, pop(stack_b));
-		write(1, "pa\n", 3);
-		*op_count += 1;
 		
-	}
-	int smallest_stack_a = find_smallest(stack_a);
-	while (peek(stack_a) != smallest_stack_a)
-	{
-		if (find_steps_to_top(stack_a, smallest_stack_a) < stack_a->top / 2)
-		{
-			rotate_stack(stack_a);
-			write(1, "ra2\n", 4);
-			*op_count += 1;
-		}
-		else
-		{
-			rev_rotate_stack(stack_a);
-			write(1, "rra3\n", 5);
-			*op_count += 1;
-		}
 	}
 	while (stack_a->numbers[0] != largest_stack_a)
 	{
@@ -371,6 +366,22 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		write(1, "ra1\n", 4);
 		*op_count += 1;
 	}
+//	int smallest_stack_a = find_smallest(stack_a);
+//	while (peek(stack_a) != smallest_stack_a)
+//	{
+//		if (find_steps_to_top(stack_a, smallest_stack_a) < stack_a->top / 2)
+//		{
+//			rotate_stack(stack_a);
+//			write(1, "ra2\n", 4);
+//			*op_count += 1;
+//		}
+//		else
+//		{
+//			rev_rotate_stack(stack_a);
+//			write(1, "rra3\n", 5);
+//			*op_count += 1;
+//		}
+//	}
 	return (stack_a);
 }
 

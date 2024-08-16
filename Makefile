@@ -6,7 +6,7 @@ NAME = push_swap
 
 CC = gcc
 
-CCFLAGS = -Wall -Wextra -Werror
+CCFLAGS = -Wall -Wextra -Werror 
 
 INC_DIR = .
 
