@@ -159,6 +159,8 @@ int find_pair(int value, Stack *stack)
 	int	pair;
 	int	i;
 	int	perfect_pairing;
+	int	smallest = INT_MAX;
+	int	largest = INT_MIN;
 
 	if (!stack)
 		return (-1);
@@ -167,13 +169,19 @@ int find_pair(int value, Stack *stack)
 	i = stack->top;
 	while (i >= 0)
 	{
-		if (stack->numbers[i] - value > 0 && stack->numbers[i] - value < perfect_pairing)
+		if (stack->numbers[i] < smallest)
+			smallest = stack->numbers[i];
+		if (stack->numbers[i] > largest)
+			largest = stack->numbers[i];
+		if (stack->numbers[i] > value && stack->numbers[i] - value < perfect_pairing)
 		{
 			pair = stack->numbers[i];
 			perfect_pairing = stack->numbers[i] - value;
 		}
 		i--;
 	}
+	if (pair == -1 || (value > largest && smallest - value < perfect_pairing))
+		pair = smallest;
 	return (pair);
 }
 
@@ -186,14 +194,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 	int	largest_stack_a;
 	
 	largest_stack_a = find_largest(stack_a);
-	i = stack_a->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
-	printf("\n");
-	while (stack_a->top > 4)
+	while (stack_a->top >= 5)
 	{
 		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
 		if (peek(stack_a) < mean_value)
@@ -209,39 +210,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			*op_count += 1;
 		}
 	}
-	printf("STACK A: ");
-	i = stack_a->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
-	printf("\n");
-	printf("STACK B: ");
-	i = stack_b->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_b->numbers[i]);
-		i--;
-	}
-	printf("\n");
 	sort_size_5(stack_a, stack_b, op_count);
-	printf("STACK A AFTER SORT 5: ");
-	i = stack_a->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
-	printf("\n");
-	printf("STACK B: ");
-	i = stack_b->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_b->numbers[i]);
-		i--;
-	}
-	printf("\n");
 	while (!empty_stack(stack_b))
 	{
 		int	steps_stack_a;
@@ -267,10 +236,6 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			if (find_pair(stack_b->numbers[j], stack_a) != -1)
 			{
 				pairs[i] = find_pair(stack_b->numbers[j], stack_a);
-			}
-			else
-			{
-				pairs[i] = stack_b->numbers[j] - 1;
 			}
 			i++;
 			j--;
@@ -298,12 +263,6 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			}
 			i += 2;
 		}
-		printf("\n");
-		printf("value_top_a: %d \n", value_top_a);
-		printf("value_top_b: %d \n", value_top_b);
-		printf("steps_stack_a: %d \n", steps_stack_a);
-		printf("steps_stack_b: %d \n", steps_stack_b);
-		printf("\n");
 		free(pairs);
 		while (peek(stack_a) != value_top_a)
 		{
@@ -342,22 +301,6 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		push(stack_a, pop(stack_b));
 		write(1, "pa\n", 3);
 		*op_count += 1;
-		printf("STACK A: ");
-		i = stack_a->top;
-		while (i >= 0)
-		{
-			printf("%d ", stack_a->numbers[i]);
-			i--;
-		}
-		printf("\n");
-		printf("STACK B: ");
-		i = stack_b->top;
-		while (i >= 0)
-		{
-			printf("%d ", stack_b->numbers[i]);
-			i--;
-		}
-		printf("\n");
 		
 	}
 	while (stack_a->numbers[0] != largest_stack_a)
@@ -366,22 +309,6 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		write(1, "ra1\n", 4);
 		*op_count += 1;
 	}
-//	int smallest_stack_a = find_smallest(stack_a);
-//	while (peek(stack_a) != smallest_stack_a)
-//	{
-//		if (find_steps_to_top(stack_a, smallest_stack_a) < stack_a->top / 2)
-//		{
-//			rotate_stack(stack_a);
-//			write(1, "ra2\n", 4);
-//			*op_count += 1;
-//		}
-//		else
-//		{
-//			rev_rotate_stack(stack_a);
-//			write(1, "rra3\n", 5);
-//			*op_count += 1;
-//		}
-//	}
 	return (stack_a);
 }
 
