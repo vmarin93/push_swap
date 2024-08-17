@@ -63,25 +63,6 @@ int is_sorted(Stack *stack)
 	return (1);
 }
 
-int is_rev_sorted(Stack *stack)
-{
-	int	value;
-	int	i;
-
-	if (!stack)
-		return (0);
-	value = stack->numbers[stack->top];
-	i = stack->size - 1;
-	while(i > 0)
-	{
-		if (stack->numbers[i - 1] > value)
-			return (0);
-		value = stack->numbers[i - 1];
-		i--;
-	}
-	return (1);
-}
-
 int find_largest(Stack *stack)
 {
 	int	largest;
@@ -98,24 +79,6 @@ int find_largest(Stack *stack)
 		i++;
 	}
 	return (largest);
-}
-
-int find_smallest(Stack *stack)
-{
-	int	smallest;
-	int	i;
-
-	if (!stack)
-		return (-1);
-	smallest = stack->numbers[0];
-	i = 1;
-	while (i <= stack->top)
-	{
-		if (stack->numbers[i] < smallest)
-			smallest = stack->numbers[i];
-		i++;
-	}
-	return (smallest);
 }
 
 int find_steps_to_top(Stack *stack, int value)
@@ -193,6 +156,8 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 	int	j;
 	int	largest_stack_a;
 	
+	if (is_sorted(stack_a))
+		return (stack_a);
 	largest_stack_a = find_largest(stack_a);
 	while (stack_a->top >= 5)
 	{
@@ -306,7 +271,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 	while (stack_a->numbers[0] != largest_stack_a)
 	{
 		rotate_stack(stack_a);
-		write(1, "ra1\n", 4);
+		write(1, "ra\n", 3);
 		*op_count += 1;
 	}
 	return (stack_a);
