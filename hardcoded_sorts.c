@@ -49,11 +49,12 @@ Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops)
 {
 	int	smallest;
 	int	steps_to_top;
+
 	smallest = find_smallest(stack_a);
-	steps_to_top= find_steps_to_top(stack_a, smallest);
+	steps_to_top = find_steps_to_top(stack_a, smallest);
 	while (peek(stack_a) != smallest)
 	{
-		if (steps_to_top>= 2)
+		if (steps_to_top < 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
@@ -83,7 +84,7 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops)
 	steps_to_top = find_steps_to_top(stack_a, smallest);
 	while(peek(stack_a) != smallest)
 	{
-		if (steps_to_top >= 2)
+		if (steps_to_top < 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
@@ -99,7 +100,7 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops)
 	steps_to_top = find_steps_to_top(stack_a, largest);
 	while(peek(stack_a) != largest)
 	{
-		if (steps_to_top >= 2)
+		if (steps_to_top < 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);

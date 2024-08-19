@@ -118,9 +118,9 @@ int find_steps_to_top(Stack *stack, int value)
 	return (-1);
 }
 
-int ft_sum(Stack *stack)
+long ft_sum(Stack *stack)
 {
-	int	sum;
+	long	sum;
 	int	i;
 
 	if (!stack)
@@ -213,7 +213,7 @@ void register_ops(const char *op, char **ops)
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops) 
 {
-	int	mean_value;
+	long	mean_value;
 	int	*pairs;
 	int	i;
 	int	j;
@@ -231,15 +231,15 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 	while (stack_a->top >= 5)
 	{
 		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
-		if (peek(stack_a) < mean_value)
-		{
-			push(stack_b, pop(stack_a));
-			register_ops("pb\n", ops);
-		}
-		else
+		if (peek(stack_a) > mean_value)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
+		}
+		else
+		{
+			push(stack_b, pop(stack_a));
+			register_ops("pb\n", ops);
 		}
 	}
 	sort_size_5(stack_a, stack_b, ops);
@@ -300,30 +300,30 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		{
 			if (value_top_a == -1)
 				break ;
-			if (steps_stack_a <= stack_a->top / 2)
-			{
-				rotate_stack(stack_a);
-				register_ops("ra\n", ops);
-			}
-			else
+			if (steps_stack_a > stack_a->top / 2)
 			{
 				rev_rotate_stack(stack_a);
 				register_ops("rra\n", ops);
+			}
+			else
+			{
+				rotate_stack(stack_a);
+				register_ops("ra\n", ops);
 			}
 		}
 		while (peek(stack_b) != value_top_b)
 		{
 			if (value_top_b == -1)
 				break;
-			if (steps_stack_b <= stack_b->top / 2)
-			{
-				rotate_stack(stack_b);
-				register_ops("ra\n", ops);
-			}
-			else
+			if (steps_stack_b > stack_b->top / 2)
 			{
 				rev_rotate_stack(stack_b);
 				register_ops("rrb\n", ops);
+			}
+			else
+			{
+				rotate_stack(stack_b);
+				register_ops("ra\n", ops);
 			}
 		}
 		push(stack_a, pop(stack_b));
@@ -332,8 +332,16 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 	}
 	while (stack_a->numbers[0] != largest_stack_a)
 	{
-		rotate_stack(stack_a);
-		register_ops("ra\n", ops);
+		if (find_steps_to_top(stack_a, largest_stack_a) > stack_a->top / 2)
+		{
+			rev_rotate_stack(stack_a);
+			register_ops("rra\n", ops);
+		}
+		else 
+		{
+			rotate_stack(stack_a);
+			register_ops("ra\n", ops);
+		}
 	}
 	return (stack_a);
 }
@@ -451,6 +459,12 @@ int main(int argc, char *argv[])
 			i++;
 			op_count++;
 		}
+	}
+	i = 0;
+	while (ops[i] != NULL)
+	{
+		free(ops[i]);
+		i++;
 	}
 	printf("\n");
 	printf("Ops array length: %d", op_count);
