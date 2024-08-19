@@ -16,7 +16,7 @@
 	// that there are no duplicate integers in the input
 // Build 2 stack structures, a and b.
 // Store the input we get from the user at the command line in stack a
-// implement the operations we are allowed to do for sorting the numbers:
+// implement the ops we are allowed to do for sorting the numbers:
 	// sa (swap a): Swap the first 2 elements at the top of stack a.
 	// 	Do nothing if there is only one or no elements.
 	// sb (swap b): Swap the first 2 elements at the top of stack b.
@@ -79,6 +79,24 @@ int find_largest(Stack *stack)
 		i++;
 	}
 	return (largest);
+}
+
+int find_smallest(Stack *stack)
+{
+	int	smallest;
+	int	i;
+
+	if (!stack)
+		return (-1);
+	smallest = stack->numbers[0];
+	i = 1;
+	while (i <= stack->top)
+	{
+		if (stack->numbers[i] < smallest)
+			smallest = stack->numbers[i];
+		i++;
+	}
+	return (smallest);
 }
 
 int find_steps_to_top(Stack *stack, int value)
@@ -148,7 +166,52 @@ int find_pair(int value, Stack *stack)
 	return (pair);
 }
 
-Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
+
+int ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+char *ft_strdup(const char *str)
+{
+	char	*dup;
+	int	i;
+
+	if (!str)
+		return (NULL);
+	dup = malloc(ft_strlen(str) + 1);
+	if (dup == NULL)
+		return (NULL);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+void register_ops(const char *op, char **ops)
+{
+	int	i;
+	
+	i = 0;
+	while(ops[i] != NULL)
+		i++;
+	if (i == 15000)
+		exit(1);
+	ops[i] = ft_strdup(op);
+	if (ops[i] == NULL)
+		exit(1);
+}
+
+Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops) 
 {
 	int	mean_value;
 	int	*pairs;
@@ -158,6 +221,12 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 	
 	if (is_sorted(stack_a))
 		return (stack_a);
+	else if (stack_a->top == 2)
+		sort_size_3(stack_a, ops);
+	else if (stack_a->top == 3)
+		sort_size_4(stack_a, stack_b, ops);
+	else if (stack_a->top == 4)
+		sort_size_5(stack_a, stack_b, ops);
 	largest_stack_a = find_largest(stack_a);
 	while (stack_a->top >= 5)
 	{
@@ -165,17 +234,15 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 		if (peek(stack_a) < mean_value)
 		{
 			push(stack_b, pop(stack_a));
-			write(1, "pb\n", 3);
-			*op_count += 1;
+			register_ops("pb\n", ops);
 		}
 		else
 		{
 			rotate_stack(stack_a);
-			write(1, "ra\n", 3);
-			*op_count += 1;
+			register_ops("ra\n", ops);
 		}
 	}
-	sort_size_5(stack_a, stack_b, op_count);
+	sort_size_5(stack_a, stack_b, ops);
 	while (!empty_stack(stack_b))
 	{
 		int	steps_stack_a;
@@ -236,14 +303,12 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			if (steps_stack_a <= stack_a->top / 2)
 			{
 				rotate_stack(stack_a);
-				write(1, "ra\n", 3);
-				*op_count += 1;
+				register_ops("ra\n", ops);
 			}
 			else
 			{
 				rev_rotate_stack(stack_a);
-				write(1, "rra\n", 4);
-				*op_count += 1;
+				register_ops("rra\n", ops);
 			}
 		}
 		while (peek(stack_b) != value_top_b)
@@ -253,28 +318,38 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, int *op_count)
 			if (steps_stack_b <= stack_b->top / 2)
 			{
 				rotate_stack(stack_b);
-				write(1, "rb\n", 3);
-				*op_count += 1;
+				register_ops("ra\n", ops);
 			}
 			else
 			{
 				rev_rotate_stack(stack_b);
-				write(1, "rrb\n", 4);
-				*op_count += 1;
+				register_ops("rrb\n", ops);
 			}
 		}
 		push(stack_a, pop(stack_b));
-		write(1, "pa\n", 3);
-		*op_count += 1;
+		register_ops("pa\n", ops);
 		
 	}
 	while (stack_a->numbers[0] != largest_stack_a)
 	{
 		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count += 1;
+		register_ops("ra\n", ops);
 	}
 	return (stack_a);
+}
+
+int ft_strcmp(const char *str1, const char *str2)
+{
+	int	i;
+
+	i = 0;
+	while (str1[i] != '\0' || str2[i] != '\0')
+	{
+		if (str1[i] != str2[i])
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int main(int argc, char *argv[])
@@ -289,7 +364,14 @@ int main(int argc, char *argv[])
 	char	*endptr;
 	int	i;
 	int	op_count;
+	char	*ops[15000];
 
+	i = 0;
+	while (i < 15000)
+	{
+		ops[i] = NULL;
+		i++;
+	}
 	op_count = 0;
 	if (argc < 2)
 	{
@@ -336,9 +418,42 @@ int main(int argc, char *argv[])
 		i--;
 	}
 	free(input);
-	sort_stack(stack_a, stack_b, &op_count);
+	sort_stack(stack_a, stack_b, ops);
 	printf("\n");
-	printf("Stack sorted using %d operations", op_count);
+	printf("Operations: \n");
+	i = 0;
+	while(ops[i + 1] != NULL)
+	{
+		if ((ft_strcmp(ops[i], "sa\n") && ft_strcmp(ops[i + 1], "sb\n"))
+				|| (ft_strcmp(ops[i], "sb\n") && ft_strcmp(ops[i + 1], "sa\n")))
+		{
+			printf("ss\n");
+			op_count++;
+			i += 2;
+		}
+		else if ((ft_strcmp(ops[i], "ra\n") && ft_strcmp(ops[i + 1], "rb\n"))
+				|| (ft_strcmp(ops[i], "rb\n") && ft_strcmp(ops[i + 1], "ra\n")))
+		{
+			printf("rr\n");
+			op_count++;
+			i += 2;
+		}
+		else if ((ft_strcmp(ops[i], "rra\n") && ft_strcmp(ops[i + 1], "rrb\n"))
+				|| (ft_strcmp(ops[i], "rrb\n") && ft_strcmp(ops[i + 1], "rra\n")))
+		{
+			printf("rrr\n");
+			op_count++;
+			i += 2;
+		}
+		else
+		{
+			printf("%s", ops[i]);
+			i++;
+			op_count++;
+		}
+	}
+	printf("\n");
+	printf("Ops array length: %d", op_count);
 	printf("\n");
 	i = stack_a->size - 1;
 	while (i >= 0)

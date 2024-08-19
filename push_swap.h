@@ -43,11 +43,11 @@ long rotate_stack(Stack *stack);
 
 long rev_rotate_stack(Stack *stack);
 
-Stack *sort_size_3(Stack *stack_a, int *op_count);
+Stack *sort_size_3(Stack *stack_a, char **ops);
 
-Stack *sort_size_4(Stack *stack_a, Stack *stack_b, int *op_count);
+Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops);
 
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count);
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops);
 
 int is_sorted(Stack *stack);
 
@@ -58,5 +58,11 @@ int find_largest(Stack *stack);
 int find_smallest(Stack *stack);
 
 int find_steps_to_top(Stack *stack, int value);
+
+void register_ops(const char *op, char **ops);
+
+char *ft_strdup(const char *str);
+
+int ft_strlen(const char *str);
 
 #endif

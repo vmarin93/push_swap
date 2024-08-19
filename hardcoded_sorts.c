@@ -1,8 +1,8 @@
 #include "push_swap.h"
+#include <sys/types.h>
 #include <unistd.h>
-#include <stdio.h>
 
-Stack *sort_size_3(Stack *stack_a, int *op_count)
+Stack *sort_size_3(Stack *stack_a, char **ops)
 {
 	int	top;
 	int	bottom;
@@ -16,43 +16,36 @@ Stack *sort_size_3(Stack *stack_a, int *op_count)
 	if ((top < middle && top < bottom) && middle > bottom)
 	{
 		rev_rotate_stack(stack_a);
-		write(1, "rra\n", 4);
-		*op_count +=1;
+		register_ops("rra\n", ops);
 		swap_top(stack_a);
-		write(1, "sa\n", 3);
-		*op_count +=1;
+		register_ops("sa\n", ops);
 	}
 	else if (top < middle && top > bottom)
 	{
 		rev_rotate_stack(stack_a);
-		write(1, "rra\n", 4);
-		*op_count +=1;
+		register_ops("rra\n", ops);
 	}
 	else if ((top > middle && top > bottom) && middle < bottom)
 	{
 		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count +=1;
+		register_ops("ra\n", ops);
 	}
 	else if ((top > middle && top > bottom) && middle > bottom)
 	{
 		swap_top(stack_a);
-		write(1, "sa\n", 3);
-		*op_count +=1;
+		register_ops("sa\n", ops);
 		rev_rotate_stack(stack_a);
-		write(1, "rra\n", 4);
-		*op_count +=1;
+		register_ops("rra\n", ops);
 	}
 	else if ((top > middle && top < bottom) && middle < bottom)
 	{
 		swap_top(stack_a);
-		write(1, "sa\n", 3);
-		*op_count +=1;
+		register_ops("sa\n", ops);
 	}
 	return (stack_a);
 }
 
-Stack *sort_size_4(Stack *stack_a, Stack *stack_b, int *op_count)
+Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops)
 {
 	int	smallest;
 	int	steps_to_top;
@@ -63,27 +56,23 @@ Stack *sort_size_4(Stack *stack_a, Stack *stack_b, int *op_count)
 		if (steps_to_top>= 2)
 		{
 			rotate_stack(stack_a);
-			write(1, "ra\n", 3);
-			*op_count +=1;
+			register_ops("ra\n", ops);
 		}
 		else
 		{
 			rev_rotate_stack(stack_a);
-			write(1, "rra\n", 4);
-			*op_count +=1;
+			register_ops("rra\n", ops);
 		}
 	}
 	push(stack_b, pop(stack_a));
-	write(1, "pb\n", 3);
-	*op_count +=1;
-	sort_size_3(stack_a, op_count);
+	register_ops("pb\n", ops);
+	sort_size_3(stack_a, ops);
 	push(stack_a, pop(stack_b));
-	write(1, "pa\n", 3);
-	*op_count += 1;
+	register_ops("pa\n", ops);
 	return(stack_a);
 }
 
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count)
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops)
 {
 	int	smallest;
 	int	largest;
@@ -97,56 +86,46 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, int *op_count)
 		if (steps_to_top >= 2)
 		{
 			rotate_stack(stack_a);
-			write(1, "ra\n", 3);
-			*op_count +=1;
+			register_ops("ra\n", ops);
 		}
 		else
 		{
 			rev_rotate_stack(stack_a);
-			write(1, "rra\n", 4);
-			*op_count +=1;
+			register_ops("rra\n", ops);
 		}
 	}
 	push(stack_b, pop(stack_a));
-	write(1, "pb\n", 3);
-	*op_count += 1;
+	register_ops("pb\n", ops);
 	steps_to_top = find_steps_to_top(stack_a, largest);
 	while(peek(stack_a) != largest)
 	{
 		if (steps_to_top >= 2)
 		{
 			rotate_stack(stack_a);
-			write(1, "ra\n", 3);
-			*op_count +=1;
+			register_ops("ra\n", ops);
 		}
 		else
 		{
 			rev_rotate_stack(stack_a);
-			write(1, "rra\n", 4);
-			*op_count +=1;
+			register_ops("rra\n", ops);
 		}
 	}
 	push(stack_b, pop(stack_a));
-	write(1, "pb\n", 3);
-	*op_count += 1;
-	sort_size_3(stack_a, op_count);
+	register_ops("pb\n", ops);
+	sort_size_3(stack_a, ops);
 	push(stack_a, pop(stack_b));
-	write(1, "pa\n", 3);
-	*op_count += 1;
+	register_ops("pa\n", ops);
 	if (peek(stack_a) > stack_a->numbers[stack_a->top - 1])
 	{
 		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count +=1;
+		register_ops("ra\n", ops);
 	}
 	push(stack_a, pop(stack_b));
-	write(1, "pa\n", 3);
-	*op_count += 1;
+	register_ops("pa\n", ops);
 	if (peek(stack_a) > stack_a->numbers[stack_a->top - 1])
 	{
 		rotate_stack(stack_a);
-		write(1, "ra\n", 3);
-		*op_count +=1;
+		register_ops("ra\n", ops);
 	}
 	return (stack_a);
 }
