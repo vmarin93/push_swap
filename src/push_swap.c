@@ -318,6 +318,8 @@ int ft_strcmp(const char *str1, const char *str2)
 	return (1);
 }
 
+// This needs to be in its own file named main.c
+// Otherwise, its not clear what the entrypoint of this is project is
 int main(int argc, char *argv[])
 {
 	Stack *stack_a = create_stack(argc -1);
