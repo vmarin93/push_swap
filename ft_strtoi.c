@@ -17,14 +17,9 @@ int ft_isdigit(char c)
 
 int ft_strtoi(const char *str, char **endptr)
 {
-	long	result;
-	int	sign;
-	int	digit;
-	int	i;
-
-	result = 0;
-	sign = 1;
-	i = 0;
+	long result = 0;
+	int sign = 1;
+	int i = 0;
 	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
@@ -41,7 +36,7 @@ int ft_strtoi(const char *str, char **endptr)
 	}
 	while (ft_isdigit(str[i]))
 	{
-		digit = str[i] - '0'; 
+		int digit = str[i] - '0'; 
 		if (result > INT_MAX / 10 || (result == INT_MAX / 10 && digit > INT_MAX % 10))
 		{
 			if (endptr != NULL)

@@ -46,13 +46,10 @@
 
 int is_sorted(Stack *stack)
 {
-	int	value;
-	int	i;
-
 	if (!stack)
 		return (0);
-	value = stack->numbers[stack->top];
-	i = stack->size - 1;
+	int value = stack->numbers[stack->top];
+	int i = stack->size - 1;
 	while(i > 0)
 	{
 		if (stack->numbers[i - 1] < value)
@@ -65,13 +62,10 @@ int is_sorted(Stack *stack)
 
 int find_largest(Stack *stack)
 {
-	int	largest;
-	int	i;
-
 	if (!stack)
 		return(-1);
-	largest = stack->numbers[0];
-	i = 1;
+	int largest = stack->numbers[0];
+	int i = 1;
 	while (i <= stack->top)
 	{
 		if (stack->numbers[i] > largest)
@@ -83,13 +77,10 @@ int find_largest(Stack *stack)
 
 int find_smallest(Stack *stack)
 {
-	int	smallest;
-	int	i;
-
 	if (!stack)
 		return (-1);
-	smallest = stack->numbers[0];
-	i = 1;
+	int smallest = stack->numbers[0];
+	int i = 1;
 	while (i <= stack->top)
 	{
 		if (stack->numbers[i] < smallest)
@@ -101,13 +92,10 @@ int find_smallest(Stack *stack)
 
 int find_steps_to_top(Stack *stack, int value)
 {
-	int	steps;
-	int	i;
-
 	if (!stack)
 		return (-1);
-	steps = 0;
-	i = stack->top;
+	int steps = 0;
+	int i = stack->top;
 	while (i >= 0)
 	{
 		if (stack->numbers[i] == value)
@@ -120,13 +108,10 @@ int find_steps_to_top(Stack *stack, int value)
 
 long ft_sum(Stack *stack)
 {
-	long	sum;
-	int	i;
-
 	if (!stack)
 		return (0);
-	sum = 0;
-	i = stack->top;
+	long sum = 0;
+	int i = stack->top;
 	while (i >= 0)
 	{
 		sum += stack->numbers[i];
@@ -137,17 +122,14 @@ long ft_sum(Stack *stack)
 
 int find_pair(int value, Stack *stack)
 {
-	int	pair;
-	int	i;
-	int	perfect_pairing;
 	int	smallest = INT_MAX;
 	int	largest = INT_MIN;
 
 	if (!stack)
 		return (-1);
-	pair = -1;
-	perfect_pairing = INT_MAX;
-	i = stack->top;
+	int pair = -1;
+	int perfect_pairing = INT_MAX;
+	int i = stack->top;
 	while (i >= 0)
 	{
 		if (stack->numbers[i] < smallest)
@@ -169,9 +151,7 @@ int find_pair(int value, Stack *stack)
 
 int ft_strlen(const char *str)
 {
-	int	i;
-
-	i = 0;
+	int i = 0;
 	while (str[i] != '\0')
 		i++;
 	return (i);
@@ -179,15 +159,12 @@ int ft_strlen(const char *str)
 
 char *ft_strdup(const char *str)
 {
-	char	*dup;
-	int	i;
-
 	if (!str)
 		return (NULL);
-	dup = malloc(ft_strlen(str) + 1);
+	char *dup = malloc(ft_strlen(str) + 1);
 	if (dup == NULL)
 		return (NULL);
-	i = 0;
+	int i = 0;
 	while (str[i] != '\0')
 	{
 		dup[i] = str[i];
@@ -199,9 +176,7 @@ char *ft_strdup(const char *str)
 
 void register_ops(const char *op, char **ops)
 {
-	int	i;
-	
-	i = 0;
+	int i = 0;
 	while(ops[i] != NULL)
 		i++;
 	if (i == 15000)
@@ -213,12 +188,6 @@ void register_ops(const char *op, char **ops)
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops) 
 {
-	long	mean_value;
-	int	*pairs;
-	int	i;
-	int	j;
-	int	largest_stack_a;
-	
 	if (is_sorted(stack_a))
 		return (stack_a);
 	else if (stack_a->top == 2)
@@ -227,10 +196,10 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		sort_size_4(stack_a, stack_b, ops);
 	else if (stack_a->top == 4)
 		sort_size_5(stack_a, stack_b, ops);
-	largest_stack_a = find_largest(stack_a);
+	int largest_stack_a = find_largest(stack_a);
 	while (stack_a->top >= 5)
 	{
-		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
+		long mean_value = (ft_sum(stack_a) / stack_a->top + 1);
 		if (peek(stack_a) > mean_value)
 		{
 			rotate_stack(stack_a);
@@ -245,22 +214,16 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 	sort_size_5(stack_a, stack_b, ops);
 	while (!empty_stack(stack_b))
 	{
-		int	steps_stack_a;
-		int	steps_stack_b;
-		int	value_top_a;
-		int	value_top_b;
-		int	total_steps;
-
-		pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
+		int *pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
 		if (pairs == NULL)
 			return (NULL);
-		total_steps = INT_MAX;
-		value_top_a = -1;
-		value_top_b = -1;
-		steps_stack_a = -1;
-		steps_stack_b = -1;
-		i = 0;
-		j = stack_b->top;
+		int total_steps = INT_MAX;
+		int value_top_a = -1;
+		int value_top_b = -1;
+		int steps_stack_a = -1;
+		int steps_stack_b = -1;
+		int i = 0;
+		int j = stack_b->top;
 		while (j >= 0)
 		{
 			pairs[i] = stack_b->numbers[j];
@@ -275,11 +238,8 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		i = 0;
 		while (i <= (2 * stack_b->top))
 		{
-			int	current_steps_b;
-			int	current_steps_a;
-			
-			current_steps_b = find_steps_to_top(stack_b, pairs[i]);
-			current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
+			int current_steps_b = find_steps_to_top(stack_b, pairs[i]);
+			int current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
 			if (current_steps_a < 0 || current_steps_b < 0)
 			{
 				i += 2;
@@ -348,9 +308,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 
 int ft_strcmp(const char *str1, const char *str2)
 {
-	int	i;
-
-	i = 0;
+	int i = 0;
 	while (str1[i] != '\0' || str2[i] != '\0')
 	{
 		if (str1[i] != str2[i])
@@ -368,31 +326,29 @@ int main(int argc, char *argv[])
 	Stack *stack_b = create_stack(argc -1);
 	if (stack_b == NULL)
 		return (1);
-	int	*input;
 	char	*endptr;
-	int	i;
-	int	op_count;
 	char	*ops[15000];
 
-	i = 0;
+	int i = 0;
 	while (i < 15000)
 	{
 		ops[i] = NULL;
 		i++;
 	}
-	op_count = 0;
+
+	int op_count = 0;
 	if (argc < 2)
 	{
 		return (1);
 	}
-	input = malloc(sizeof(int) * (argc - 1)); 
+
+	int *input = malloc(sizeof(int) * (argc - 1));
 	if (input == NULL) 
 		return (1);
 	i = 0;
 	while (i < argc - 1)
 	{
-		long	number;
-		number = (ft_strtoi(argv[i + 1], &endptr));
+		long number = (ft_strtoi(argv[i + 1], &endptr));
 		if (*endptr != '\0' || endptr == argv[i + 1] || number == LONG_MAX|| number == LONG_MIN)
 		{
 			write(2, "Error\n", 6);
@@ -405,8 +361,7 @@ int main(int argc, char *argv[])
 	i = 0;
 	while (i < argc - 2)
 	{
-		int	j;
-		j = i + 1;
+		int j = i + 1;
 		while (j < argc - 1)
 		{
 			if (input[i] == input[j])
