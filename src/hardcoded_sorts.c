@@ -2,6 +2,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+// I'd create a function `Stack *sort_size(Stack *stack_a, char **ops,int size)
+// that then calls sort_size_3, sort_size_4 etc
 Stack *sort_size_3(Stack *stack_a, char **ops)
 {
 	if (is_sorted(stack_a))

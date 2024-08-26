@@ -60,6 +60,20 @@ int is_sorted(Stack *stack)
 	return 1;
 }
 
+/*
+Good example for unit test
+
+ GIVEN A stack with numbers 1  2 3 4 5
+ WHEN Calling `find_largest`
+THEN 5 is returned
+
+Additional test cases:
+	* 5 4 3 2 1 ( largest is first)
+	* 1 3 5 3 4 (largest in middle)
+	* 1 1 1 1 1 ( all values the same)
+	* -1 -2 -3 -4 -5 ( handles negatives correctly,
+ this depends on whether numbers can be negative or not
+*/
 int find_largest(Stack *stack)
 {
 	if (!stack)
@@ -120,6 +134,7 @@ long ft_sum(Stack *stack)
 	return sum;
 }
 
+
 int find_pair(int value, Stack *stack)
 {
 	int	smallest = INT_MAX;
@@ -157,10 +172,12 @@ int ft_strlen(const char *str)
 	return i;
 }
 
+
 char *ft_strdup(const char *str)
 {
 	if (!str)
 		return NULL;
+	// might be memory leak; this is not freed when called by register_ops
 	char *dup = malloc(ft_strlen(str) + 1);
 	if (dup == NULL)
 		return NULL;
@@ -174,14 +191,18 @@ char *ft_strdup(const char *str)
 	return dup;
 }
 
+//I'd move all the functions declared here into a a 'lib' folder/file as they're
+// not related to the algorithm here, just utility functions
 void register_ops(const char *op, char **ops)
 {
 	int i = 0;
 	while(ops[i] != NULL)
 		i++;
+	//hack for inifinite loop? if so should add comment to say that
 	if (i == 15000)
 		exit(1);
 	ops[i] = ft_strdup(op);
+
 	if (ops[i] == NULL)
 		exit(1);
 }
@@ -190,6 +211,8 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 {
 	if (is_sorted(stack_a))
 		return stack_a;
+	// this would be simplified if you add a `sort_size() that takes the size
+	// and move these if statements there to contain the logic
 	else if (stack_a->top == 2)
 		sort_size_3(stack_a, ops);
 	else if (stack_a->top == 3)
@@ -197,6 +220,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 	else if (stack_a->top == 4)
 		sort_size_5(stack_a, stack_b, ops);
 	int largest_stack_a = find_largest(stack_a);
+
 	while (stack_a->top >= 5)
 	{
 		long mean_value = ft_sum(stack_a) / stack_a->top + 1;
@@ -211,7 +235,9 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 			register_ops("pb\n", ops);
 		}
 	}
+
 	sort_size_5(stack_a, stack_b, ops);
+
 	while (!empty_stack(stack_b))
 	{
 		int *pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
@@ -387,6 +413,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 	printf("Operations: \n");
 	i = 0;
+	//This should be its own function and called by main
 	while(ops[i + 1] != NULL)
 	{
 		if ((ft_strcmp(ops[i], "sa\n") && ft_strcmp(ops[i + 1], "sb\n"))
