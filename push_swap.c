@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//
 // Check for input. If no input, return the prompt to the user
 // Sanitize the input. Make sure all arguments are integers and fit within the int type and 
 	// that there are no duplicate integers in the input
@@ -39,328 +38,80 @@
 // create an array that is going to store all the operations we perform whilst sorting the input
 
 #include "push_swap.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <limits.h>
 
-int is_sorted(Stack *stack)
+int *do_int_conversion(int argc, char *argv[])
 {
-	int	value;
+	int	*input;
 	int	i;
+	long	number;
+	char	*endptr;
 
-	if (!stack)
-		return (0);
-	value = stack->numbers[stack->top];
-	i = stack->size - 1;
-	while(i > 0)
+	input = malloc(sizeof(int) * (argc - 1));
+	if (input == NULL)
+		exit(1);
+	i = 0;
+	while (i < argc - 1)
 	{
-		if (stack->numbers[i - 1] < value)
-			return (0);
-		value = stack->numbers[i - 1];
-		i--;
-	}
-	return (1);
-}
-
-int find_largest(Stack *stack)
-{
-	int	largest;
-	int	i;
-
-	if (!stack)
-		return(-1);
-	largest = stack->numbers[0];
-	i = 1;
-	while (i <= stack->top)
-	{
-		if (stack->numbers[i] > largest)
-			largest = stack->numbers[i];
-		i++;
-	}
-	return (largest);
-}
-
-int find_smallest(Stack *stack)
-{
-	int	smallest;
-	int	i;
-
-	if (!stack)
-		return (-1);
-	smallest = stack->numbers[0];
-	i = 1;
-	while (i <= stack->top)
-	{
-		if (stack->numbers[i] < smallest)
-			smallest = stack->numbers[i];
-		i++;
-	}
-	return (smallest);
-}
-
-int find_steps_to_top(Stack *stack, int value)
-{
-	int	steps;
-	int	i;
-
-	if (!stack)
-		return (-1);
-	steps = 0;
-	i = stack->top;
-	while (i >= 0)
-	{
-		if (stack->numbers[i] == value)
-			return(steps);
-		steps++;
-		i--;
-	}
-	return (-1);
-}
-
-long ft_sum(Stack *stack)
-{
-	long	sum;
-	int	i;
-
-	if (!stack)
-		return (0);
-	sum = 0;
-	i = stack->top;
-	while (i >= 0)
-	{
-		sum += stack->numbers[i];
-		i--;
-	}
-	return(sum);
-}
-
-int find_pair(int value, Stack *stack)
-{
-	int	pair;
-	int	i;
-	int	perfect_pairing;
-	int	smallest = INT_MAX;
-	int	largest = INT_MIN;
-
-	if (!stack)
-		return (-1);
-	pair = -1;
-	perfect_pairing = INT_MAX;
-	i = stack->top;
-	while (i >= 0)
-	{
-		if (stack->numbers[i] < smallest)
-			smallest = stack->numbers[i];
-		if (stack->numbers[i] > largest)
-			largest = stack->numbers[i];
-		if (stack->numbers[i] > value && stack->numbers[i] - value < perfect_pairing)
+		number = ft_strtol(argv[i + 1], &endptr);
+		if (*endptr != '\0' || endptr == argv[i + 1] || number == LONG_MAX || number == LONG_MIN)
 		{
-			pair = stack->numbers[i];
-			perfect_pairing = stack->numbers[i] - value;
+			write(2, "Error\n", 6);
+			free(input);
+			exit(1);
 		}
-		i--;
-	}
-	if (pair == -1 || (value > largest && smallest - value < perfect_pairing))
-		pair = smallest;
-	return (pair);
-}
-
-
-int ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char *ft_strdup(const char *str)
-{
-	char	*dup;
-	int	i;
-
-	if (!str)
-		return (NULL);
-	dup = malloc(ft_strlen(str) + 1);
-	if (dup == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\0')
-	{
-		dup[i] = str[i];
+		input[i] = (int)number;
 		i++;
 	}
-	dup[i] = '\0';
-	return (dup);
+	return (input);
 }
 
-void register_ops(const char *op, char **ops)
+void check_for_duplicates(int *input, int len)
 {
-	int	i;
-	
-	i = 0;
-	while(ops[i] != NULL)
-		i++;
-	if (i == 15000)
-		exit(1);
-	ops[i] = ft_strdup(op);
-	if (ops[i] == NULL)
-		exit(1);
-}
-
-Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops) 
-{
-	long	mean_value;
-	int	*pairs;
 	int	i;
 	int	j;
-	int	largest_stack_a;
-	
-	if (is_sorted(stack_a))
-		return (stack_a);
-	else if (stack_a->top == 2)
-		sort_size_3(stack_a, ops);
-	else if (stack_a->top == 3)
-		sort_size_4(stack_a, stack_b, ops);
-	else if (stack_a->top == 4)
-		sort_size_5(stack_a, stack_b, ops);
-	largest_stack_a = find_largest(stack_a);
-	while (stack_a->top >= 5)
-	{
-		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
-		if (peek(stack_a) > mean_value)
-		{
-			rotate_stack(stack_a);
-			register_ops("ra\n", ops);
-		}
-		else
-		{
-			push(stack_b, pop(stack_a));
-			register_ops("pb\n", ops);
-		}
-	}
-	sort_size_5(stack_a, stack_b, ops);
-	while (!empty_stack(stack_b))
-	{
-		int	steps_stack_a;
-		int	steps_stack_b;
-		int	value_top_a;
-		int	value_top_b;
-		int	total_steps;
 
-		pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
-		if (pairs == NULL)
-			return (NULL);
-		total_steps = INT_MAX;
-		value_top_a = -1;
-		value_top_b = -1;
-		steps_stack_a = -1;
-		steps_stack_b = -1;
-		i = 0;
-		j = stack_b->top;
-		while (j >= 0)
-		{
-			pairs[i] = stack_b->numbers[j];
-			i++;
-			if (find_pair(stack_b->numbers[j], stack_a) != -1)
-			{
-				pairs[i] = find_pair(stack_b->numbers[j], stack_a);
-			}
-			i++;
-			j--;
-		}
-		i = 0;
-		while (i <= (2 * stack_b->top))
-		{
-			int	current_steps_b;
-			int	current_steps_a;
-			
-			current_steps_b = find_steps_to_top(stack_b, pairs[i]);
-			current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
-			if (current_steps_a < 0 || current_steps_b < 0)
-			{
-				i += 2;
-				continue ;
-			}
-			if ((current_steps_b + current_steps_a) < total_steps)
-			{
-				value_top_a = pairs[i + 1];
-				value_top_b = pairs[i];
-				total_steps = current_steps_a + current_steps_b;
-				steps_stack_a = current_steps_a;
-				steps_stack_b = current_steps_b;
-			}
-			i += 2;
-		}
-		free(pairs);
-		while (peek(stack_a) != value_top_a)
-		{
-			if (value_top_a == -1)
-				break ;
-			if (steps_stack_a > stack_a->top / 2)
-			{
-				rev_rotate_stack(stack_a);
-				register_ops("rra\n", ops);
-			}
-			else
-			{
-				rotate_stack(stack_a);
-				register_ops("ra\n", ops);
-			}
-		}
-		while (peek(stack_b) != value_top_b)
-		{
-			if (value_top_b == -1)
-				break;
-			if (steps_stack_b > stack_b->top / 2)
-			{
-				rev_rotate_stack(stack_b);
-				register_ops("rrb\n", ops);
-			}
-			else
-			{
-				rotate_stack(stack_b);
-				register_ops("ra\n", ops);
-			}
-		}
-		push(stack_a, pop(stack_b));
-		register_ops("pa\n", ops);
-		
-	}
-	while (stack_a->numbers[0] != largest_stack_a)
+	i = 0;
+	while (i < len - 2)
 	{
-		if (find_steps_to_top(stack_a, largest_stack_a) > stack_a->top / 2)
+		j = i + 1;
+		while (j < len - 1)
 		{
-			rev_rotate_stack(stack_a);
-			register_ops("rra\n", ops);
+			if (input[i] == input[j])
+			{
+				write(2, "Error\n", 6);
+				free(input);
+				exit(1);
+			}
+			j++;
 		}
-		else 
-		{
-			rotate_stack(stack_a);
-			register_ops("ra\n", ops);
-		}
+		i++;
 	}
-	return (stack_a);
 }
 
-int ft_strcmp(const char *str1, const char *str2)
+void fill_stack(int *input, int len, Stack *stack_a)
 {
 	int	i;
 
-	i = 0;
-	while (str1[i] != '\0' || str2[i] != '\0')
+	i = len - 2;
+	while (i >= 0)
 	{
-		if (str1[i] != str2[i])
-			return (0);
-		i++;
+		push(stack_a, input[i]);
+		i--;
 	}
-	return (1);
 }
 
-int main(int argc, char *argv[])
+void validate_input(int argc, char *argv[], Stack *stack_a)
+{
+	int	*input;
+
+	input = do_int_conversion(argc, argv);
+	check_for_duplicates(input, argc);
+	fill_stack(input, argc, stack_a);
+	free(input);
+}
+
+int push_swap(int argc, char *argv[])
 {
 	Stack *stack_a = create_stack(argc -1);
 	if (stack_a == NULL)
@@ -368,8 +119,6 @@ int main(int argc, char *argv[])
 	Stack *stack_b = create_stack(argc -1);
 	if (stack_b == NULL)
 		return (1);
-	int	*input;
-	char	*endptr;
 	int	i;
 	int	op_count;
 	char	*ops[15000];
@@ -385,47 +134,7 @@ int main(int argc, char *argv[])
 	{
 		return (1);
 	}
-	input = malloc(sizeof(int) * (argc - 1)); 
-	if (input == NULL) 
-		return (1);
-	i = 0;
-	while (i < argc - 1)
-	{
-		long	number;
-		number = (ft_strtoi(argv[i + 1], &endptr));
-		if (*endptr != '\0' || endptr == argv[i + 1] || number == LONG_MAX|| number == LONG_MIN)
-		{
-			write(2, "Error\n", 6);
-			free(input);
-			exit(1);
-		}
-		input[i] = (int)number;
-		i++;
-	}
-	i = 0;
-	while (i < argc - 2)
-	{
-		int	j;
-		j = i + 1;
-		while (j < argc - 1)
-		{
-			if (input[i] == input[j])
-			{
-				write(2, "Error\n", 6);
-				free(input);
-				exit(1);
-			}
-			j++;
-		}
-		i++;
-	}
-	i = argc - 2;
-	while (i >= 0)
-	{
-		push(stack_a, input[i]);
-		i--;
-	}
-	free(input);
+	validate_input(argc, argv, stack_a);
 	sort_stack(stack_a, stack_b, ops);
 	printf("\n");
 	printf("Operations: \n");
@@ -478,4 +187,5 @@ int main(int argc, char *argv[])
 	printf("\n");
 	free_stack(stack_a);
 	free_stack(stack_b);
+	return (0);
 }

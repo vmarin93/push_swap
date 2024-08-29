@@ -13,9 +13,11 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-int ft_isspace(char c);
-int ft_isdigit(char c);
-int ft_strtoi(const char *str, char **endptr);
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <limits.h>
+
 
 typedef struct {
 	int	*numbers;
@@ -43,6 +45,8 @@ long rotate_stack(Stack *stack);
 
 long rev_rotate_stack(Stack *stack);
 
+Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops);
+
 Stack *sort_size_3(Stack *stack_a, char **ops);
 
 Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops);
@@ -61,8 +65,10 @@ int find_steps_to_top(Stack *stack, int value);
 
 void register_ops(const char *op, char **ops);
 
-char *ft_strdup(const char *str);
-
 int ft_strlen(const char *str);
+
+int ft_strcmp(const char *str1, const char *str2);
+
+long ft_strtol(char *str, char **endptr);
 
 #endif
