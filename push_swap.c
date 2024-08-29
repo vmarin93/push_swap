@@ -66,27 +66,24 @@ int *do_int_conversion(int argc, char *argv[])
 	return (input);
 }
 
-void check_for_duplicates(int *input, int len)
+int check_for_duplicates(int *input, int len)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < len - 2)
+	while (i < len - 1)
 	{
 		j = i + 1;
-		while (j < len - 1)
+		while (j < len)
 		{
 			if (input[i] == input[j])
-			{
-				write(2, "Error\n", 6);
-				free(input);
-				exit(1);
-			}
+				return (1);
 			j++;
 		}
 		i++;
 	}
+	return (0);
 }
 
 void fill_stack(int *input, int len, Stack *stack_a)
@@ -104,9 +101,16 @@ void fill_stack(int *input, int len, Stack *stack_a)
 void validate_input(int argc, char *argv[], Stack *stack_a)
 {
 	int	*input;
+	int	duplicates;
 
 	input = do_int_conversion(argc, argv);
-	check_for_duplicates(input, argc);
+	duplicates = check_for_duplicates(input, argc - 1);
+	if (duplicates)
+	{
+		write(2, "Error\n", 6);
+		free(input);
+		exit (1);
+	}
 	fill_stack(input, argc, stack_a);
 	free(input);
 }

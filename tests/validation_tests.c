@@ -18,7 +18,7 @@
 #define TEST_FAIL(test_name) printf(ANSI_COLOR_RED "FAIL: %s\n" ANSI_COLOR_RESET test_name)
 
 int *do_int_conversion(int argc, char *argv[]);
-void check_for_duplicates(int *input, int len);
+int check_for_duplicates(int *input, int len);
 void fill_stack(int *input, int len, Stack *stack_a);
 
 void test_do_int_conversion()
@@ -35,7 +35,27 @@ void test_do_int_conversion()
 	TEST_PASS("test_do_int_conversion");
 }
 
+void test_check_for_duplicates()
+{
+	int	duplicates_middle[7] = {1, 5, 10, 23, 46, 5, 7};
+	int	duplicates_front[7] = {1, 1, 5, 23, 46, 10, 7};
+	int	duplicates_end[7] = {1, 5, 10, 23, 46, 7, 7};
+	int	no_duplicates[7] = {1, 5, 10, 23, 46, 99, 7};
+	int	result;
+
+	result = check_for_duplicates(no_duplicates, 7);
+	ASSERT(result == 0, "no duplicates in this array");
+	result = check_for_duplicates(duplicates_middle, 7);
+	ASSERT(result == 1, "number 5 is a duplicate in the middle of this array");
+	result = check_for_duplicates(duplicates_front, 7);
+	ASSERT(result == 1, "number 1 is a duplicate at the front of this array");
+	result = check_for_duplicates(duplicates_end, 7);
+	ASSERT(result == 1, "number 7 is a duplicate at the end of this array");
+	TEST_PASS("test_check_for_duplicates");
+}
+
 int main()
 {
 	test_do_int_conversion();
+	test_check_for_duplicates();
 }
