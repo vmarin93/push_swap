@@ -18,7 +18,6 @@
 #include <unistd.h>
 #include <limits.h>
 
-
 typedef struct {
 	int	*numbers;
 	int	top;
@@ -70,5 +69,13 @@ int ft_strlen(const char *str);
 int ft_strcmp(const char *str1, const char *str2);
 
 long ft_strtol(char *str, char **endptr);
+
+void validate_input(int argc, char *argv[], Stack *stack_a);
+
+void fill_stack(int *input, int len, Stack *stack_a);
+
+int check_for_duplicates(int *input, int len);
+
+int *do_int_conversion(int argc, char *argv[]);
 
 #endif

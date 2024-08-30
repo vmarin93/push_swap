@@ -1,8 +1,5 @@
 #include "tests.h"
-
-int *do_int_conversion(int argc, char *argv[]);
-int check_for_duplicates(int *input, int len);
-void fill_stack(int *input, int len, Stack *stack_a);
+#include "../push_swap.h"
 
 void test_do_int_conversion()
 {
