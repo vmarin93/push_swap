@@ -54,8 +54,25 @@ void test_check_for_duplicates()
 	TEST_PASS("test_check_for_duplicates");
 }
 
+void test_fill_stack()
+{
+	Stack	*test_stack = create_stack(10);
+	if (test_stack == NULL)
+		exit(1);
+	int	numbers[10] = {3, 8, 43, 24, 88, 94, 27, 56, 47, 12};
+	int	rev_numbers[10] = {12, 47, 56, 27, 94, 88, 24, 43, 8, 3};
+	int	result;
+
+	fill_stack(numbers, 10, test_stack);
+	result = memcmp(rev_numbers, test_stack->numbers, 10);
+	ASSERT(result == 0, "the numbers inside the stack should be exactly the numbers in the input");
+	ASSERT(peek(test_stack) == 3, "the top of the stack should be the 0th index number in the input array");
+	TEST_PASS("test_fill_stack");
+}
+
 int main()
 {
 	test_do_int_conversion();
 	test_check_for_duplicates();
+	test_fill_stack();
 }

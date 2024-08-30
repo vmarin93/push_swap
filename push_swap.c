@@ -90,7 +90,7 @@ void fill_stack(int *input, int len, Stack *stack_a)
 {
 	int	i;
 
-	i = len - 2;
+	i = len - 1;
 	while (i >= 0)
 	{
 		push(stack_a, input[i]);
@@ -103,6 +103,8 @@ void validate_input(int argc, char *argv[], Stack *stack_a)
 	int	*input;
 	int	duplicates;
 
+	if (argc < 2)
+		exit(1);
 	input = do_int_conversion(argc, argv);
 	duplicates = check_for_duplicates(input, argc - 1);
 	if (duplicates)
@@ -111,84 +113,31 @@ void validate_input(int argc, char *argv[], Stack *stack_a)
 		free(input);
 		exit (1);
 	}
-	fill_stack(input, argc, stack_a);
+	fill_stack(input, argc - 1, stack_a);
 	free(input);
 }
 
 int push_swap(int argc, char *argv[])
 {
-	Stack *stack_a = create_stack(argc -1);
-	if (stack_a == NULL)
-		return (1);
-	Stack *stack_b = create_stack(argc -1);
-	if (stack_b == NULL)
-		return (1);
+	Stack	*stack_a;
+	Stack	*stack_b;
 	int	i;
-	int	op_count;
 	char	*ops[15000];
 
-	i = 0;
-	while (i < 15000)
-	{
-		ops[i] = NULL;
-		i++;
-	}
-	op_count = 0;
-	if (argc < 2)
-	{
+	stack_a = create_stack(argc - 1);
+	if (stack_a == NULL)
 		return (1);
-	}
+	stack_b = create_stack(argc-1);
+	if (stack_b == NULL)
+		return (1);
 	validate_input(argc, argv, stack_a);
 	sort_stack(stack_a, stack_b, ops);
-	printf("\n");
-	printf("Operations: \n");
-	i = 0;
-	while(ops[i + 1] != NULL)
-	{
-		if ((ft_strcmp(ops[i], "sa\n") && ft_strcmp(ops[i + 1], "sb\n"))
-				|| (ft_strcmp(ops[i], "sb\n") && ft_strcmp(ops[i + 1], "sa\n")))
-		{
-			printf("ss\n");
-			op_count++;
-			i += 2;
-		}
-		else if ((ft_strcmp(ops[i], "ra\n") && ft_strcmp(ops[i + 1], "rb\n"))
-				|| (ft_strcmp(ops[i], "rb\n") && ft_strcmp(ops[i + 1], "ra\n")))
-		{
-			printf("rr\n");
-			op_count++;
-			i += 2;
-		}
-		else if ((ft_strcmp(ops[i], "rra\n") && ft_strcmp(ops[i + 1], "rrb\n"))
-				|| (ft_strcmp(ops[i], "rrb\n") && ft_strcmp(ops[i + 1], "rra\n")))
-		{
-			printf("rrr\n");
-			op_count++;
-			i += 2;
-		}
-		else
-		{
-			printf("%s", ops[i]);
-			i++;
-			op_count++;
-		}
-	}
 	i = 0;
 	while (ops[i] != NULL)
 	{
 		free(ops[i]);
 		i++;
 	}
-	printf("\n");
-	printf("Ops array length: %d", op_count);
-	printf("\n");
-	i = stack_a->size - 1;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
-	printf("\n");
 	free_stack(stack_a);
 	free_stack(stack_b);
 	return (0);
