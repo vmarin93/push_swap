@@ -198,7 +198,6 @@ void register_ops(const char *op, char **ops)
 	int i = 0;
 	while(ops[i] != NULL)
 		i++;
-	//hack for inifinite loop? if so should add comment to say that
 	if (i == 15000)
 		exit(1);
 	ops[i] = ft_strdup(op);
@@ -219,8 +218,9 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		sort_size_4(stack_a, stack_b, ops);
 	else if (stack_a->top == 4)
 		sort_size_5(stack_a, stack_b, ops);
+	else {
+	
 	int largest_stack_a = find_largest(stack_a);
-
 	while (stack_a->top >= 5)
 	{
 		long mean_value = ft_sum(stack_a) / stack_a->top + 1;
@@ -230,7 +230,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 			register_ops("ra\n", ops);
 		}
 		else
-		{
+		{		
 			push(stack_b, pop(stack_a));
 			register_ops("pb\n", ops);
 		}
@@ -317,6 +317,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		
 	}
 	while (stack_a->numbers[0] != largest_stack_a)
+
 	{
 		if (find_steps_to_top(stack_a, largest_stack_a) > stack_a->top / 2)
 		{
@@ -329,6 +330,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 			register_ops("ra\n", ops);
 		}
 	}
+	};
 	return stack_a;
 }
 
@@ -414,9 +416,11 @@ int main(int argc, char *argv[])
 	printf("Operations: \n");
 	i = 0;
 	//This should be its own function and called by main
-	while(ops[i + 1] != NULL)
+
+	while(ops[i] != NULL)
 	{
-		if ((ft_strcmp(ops[i], "sa\n") && ft_strcmp(ops[i + 1], "sb\n"))
+		if(ops[i + 1] != NULL){
+			if ((ft_strcmp(ops[i], "sa\n") && ft_strcmp(ops[i + 1], "sb\n"))
 				|| (ft_strcmp(ops[i], "sb\n") && ft_strcmp(ops[i + 1], "sa\n")))
 		{
 			printf("ss\n");
@@ -436,6 +440,13 @@ int main(int argc, char *argv[])
 			printf("rrr\n");
 			op_count++;
 			i += 2;
+		}
+		else
+		{
+			printf("%s", ops[i]);
+			i++;
+			op_count++;
+		}
 		}
 		else
 		{

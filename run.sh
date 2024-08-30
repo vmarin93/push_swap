@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 set -euo pipefail
-THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+THISDIR="$( cd "$( dirname "${(%):-%N}" )" && pwd )"
 
 function help(){
 cat <<EOT
