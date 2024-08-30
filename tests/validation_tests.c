@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../push_swap.h"
-
-#define ANSI_COLOR_RED		"\x1b[31m"
-#define ANSI_COLOR_GREEN	"\x1b[32m"
-#define ANSI_COLOR_RESET	"\x1b[0m"
-
-#define ASSERT(condition, message) do { \
-	if (!(condition)) { \
-		fprintf(stderr, ANSI_COLOR_RED "Assertion failed: %s\n" ANSI_COLOR_RESET, message); \
-		exit(1); \
-	} \
-} while (0)
-
-#define TEST_PASS(test_name) printf(ANSI_COLOR_GREEN "PASS: %s\n" ANSI_COLOR_RESET, test_name) 
-#define TEST_FAIL(test_name) printf(ANSI_COLOR_RED "FAIL: %s\n" ANSI_COLOR_RESET test_name)
+#include "tests.h"
 
 int *do_int_conversion(int argc, char *argv[]);
 int check_for_duplicates(int *input, int len);
@@ -68,11 +51,4 @@ void test_fill_stack()
 	ASSERT(result == 0, "the numbers inside the stack should be exactly the numbers in the input");
 	ASSERT(peek(test_stack) == 3, "the top of the stack should be the 0th index number in the input array");
 	TEST_PASS("test_fill_stack");
-}
-
-int main()
-{
-	test_do_int_conversion();
-	test_check_for_duplicates();
-	test_fill_stack();
 }
