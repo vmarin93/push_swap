@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 // Check for input. If no input, return the prompt to the user
-// Sanitize the input. Make sure all arguments are integers and fit within the int type and 
+// Validate the input. Make sure all arguments are integers and fit within the int type and 
 	// that there are no duplicate integers in the input
 // Build 2 stack structures, a and b.
 // Store the input we get from the user at the command line in stack a
@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
 {
 	Stack	*stack_a;
 	Stack	*stack_b;
-	int	i;
 	char	*ops[15000];
 
 	stack_a = create_stack(argc - 1);
@@ -54,13 +53,8 @@ int main(int argc, char *argv[])
 		return (1);
 	validate_input(argc, argv, stack_a);
 	sort_stack(stack_a, stack_b, ops);
-	i = 0;
-	while (ops[i] != NULL)
-	{
-		free(ops[i]);
-		i++;
-	}
 	free_stack(stack_a);
 	free_stack(stack_b);
+	free_ops(ops);
 	return (0);
 }

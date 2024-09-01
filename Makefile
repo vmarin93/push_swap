@@ -1,7 +1,7 @@
-SRC = push_swap.c ft_strtol.c ft_stack.c hardcoded_sorts.c temp.c validate_input.c
+SRC = push_swap.c ft_strtol.c ft_stack.c hardcoded_sorts.c temp.c validate_input.c sort_stack.c
 OBJS := ${SRC:%.c=%.o}
 
-TEST_SRC = ./tests/validation_tests.c ./tests/main.c
+TEST_SRC = ./tests/validation_tests.c ./tests/main.c ./tests/sorting_tests.c ./tests/aux_func_tests.c
 TEST_OBJS = $(TEST_SRC:%.c=%.o)
 SHARED_OBJS = $(filter-out push_swap.o, ${OBJS})
 
@@ -9,7 +9,7 @@ NAME = push_swap
 TEST_NAME = test
 
 CC = gcc
-CCFLAGS = -Wall -Wextra -Werror
+CCFLAGS = -Wall -Wextra -Werror -g
 INC_DIR = .
 CPPFLAGS = -I${INC_DIR}
 

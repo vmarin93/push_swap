@@ -27,4 +27,11 @@ void test_do_int_conversion();
 void test_check_for_duplicates();
 void test_fill_stack();
 
+// Sorting tests
+void test_sort_size_2();
+void test_sort_size_3();
+
+// Auxiliary functions tests
+void test_find_smallest();
+
 #endif

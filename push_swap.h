@@ -62,11 +62,15 @@ int find_smallest(Stack *stack);
 
 int find_steps_to_top(Stack *stack, int value);
 
-void register_ops(const char *op, char **ops);
+void register_ops(char *op, char **ops);
+
+void free_ops(char **ops);
 
 int ft_strlen(const char *str);
 
 int ft_strcmp(const char *str1, const char *str2);
+
+char *ft_strdup(char *str);
 
 long ft_strtol(char *str, char **endptr);
 
