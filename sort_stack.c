@@ -25,20 +25,20 @@ int	*get_pairs(Stack *stack_a, Stack *stack_b)
 	int	i;
 	int	j;
 
-	pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
+	pairs = malloc(sizeof(int) * (2 * stack_b->top));
 	if (pairs == NULL)
 		return (NULL);
 	i = 0;
 	j = stack_b->top;
 	while (j >= 0)
 	{
-		pairs[i] = stack_b->numbers[i];
+		pairs[i] = stack_b->numbers[j];
 		i++;
 		if (find_pair(stack_b->numbers[j], stack_a) != -1)
 		{
 			pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+			i++;
 		}
-		i++;
 		j--;
 	}
 	return (pairs);
