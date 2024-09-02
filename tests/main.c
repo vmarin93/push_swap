@@ -11,7 +11,9 @@ int main()
 
 	// Run auxiliary functions tests
 	printf("\nAuxiliary functions tests: \n");
+	test_is_sorted();
 	test_find_smallest();
+	test_find_largest();
 	
 	// Run sorting tests
 	printf("\nSorting tests: \n");

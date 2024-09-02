@@ -32,6 +32,8 @@ void test_sort_size_2();
 void test_sort_size_3();
 
 // Auxiliary functions tests
+void test_is_sorted();
 void test_find_smallest();
+void test_find_largest();
 
 #endif
