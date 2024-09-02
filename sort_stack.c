@@ -1,9 +1,63 @@
 #include "push_swap.h"
 
-//Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, char **ops)
+void	push_to_b(Stack *stack_a, Stack *stack_b, char **ops)
+{
+	long	average;
+	while (stack_a->top >= 5)
+	{
+		average = (stack_sum(stack_a) / (stack_a->top + 1));
+		if (peek(stack_a) > average)
+		{
+			rotate_stack(stack_a);
+			register_ops("ra\n", ops);
+		}
+		else
+		{
+			push(stack_b, pop(stack_a));
+			register_ops("pb\n", ops);
+		}
+	}
+}
+
+int	*get_pairs(Stack *stack_a, Stack *stack_b)
+{
+	int	*pairs;
+	int	i;
+	int	j;
+
+	pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
+	if (pairs == NULL)
+		return (NULL);
+	i = 0;
+	j = stack_b->top;
+	while (j >= 0)
+	{
+		pairs[i] = stack_b->numbers[i];
+		i++;
+		if (find_pair(stack_b->numbers[j], stack_a) != -1)
+		{
+			pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+		}
+		i++;
+		j--;
+	}
+	return (pairs);
+}
+
+//void	push_to_a(Stack *stack_a, Stack *stack_b, char **ops)
 //{
-//	return (stack_a);
+//	int	*pairs;
+//
+//	pairs = get_pairs(stack_a, stack_b);
 //}
+
+Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, char **ops)
+{
+	push_to_b(stack_a, stack_b, ops);
+	sort_size_5(stack_a, stack_b, ops);
+//	push_to_a(stack_a, stack_b, ops);
+	return (stack_a);
+}
 
 Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 {
@@ -25,7 +79,7 @@ Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops)
 		sort_size_4(stack_a, stack_b, ops);
 	else if (stack_a->top == 4)
 		sort_size_5(stack_a, stack_b, ops);
-//	else
-//		sort_large_stack(stack_a, stack_b, ops);
+	else
+		sort_large_stack(stack_a, stack_b, ops);
 	return (stack_a);
 }

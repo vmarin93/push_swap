@@ -17,6 +17,7 @@ int main()
 	test_find_steps_to_top();
 	test_stack_sum();
 	test_find_pair();
+	test_get_pairs();
 	test_ft_strdup();
 	test_register_and_free_ops();
 	
@@ -24,5 +25,8 @@ int main()
 	printf("\nSorting tests: \n");
 	test_sort_size_2();
 	test_sort_size_3();
+	test_sort_size_4();
+	test_sort_size_5();
+	test_push_to_b();
 	printf("\n");
 }

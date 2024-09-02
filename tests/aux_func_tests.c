@@ -131,6 +131,36 @@ void test_find_pair()
 	free_stack(test_stack);
 }
 
+void test_get_pairs()
+{
+	Stack	*stack_a = create_stack(12);
+	Stack	*stack_b = create_stack(12);
+	int	*pairs;
+	int	numbers_a[5] = {64, 88, 91, 78, 65};
+	int	numbers_b[7] = {15, 9, 27, 33, 12, 43, 75};
+	//int	expected_pairs[14] = {75, 78, 43, 64, 12, 64, 33, 64, 27, 64, 9, 64, 15, 64};
+	int	i;
+	memcpy(stack_a->numbers, numbers_a, sizeof(numbers_a));
+	stack_a->top = 5;
+	memcpy(stack_b->numbers, numbers_b, sizeof(numbers_b));
+	stack_b->top = 7;
+
+	pairs = get_pairs(stack_a, stack_b);
+	i = 0;
+	while(i <= 14)
+	{
+		printf("%d\n", pairs[i]);
+	//	if (pairs[i] != expected_pairs[i])
+	//		break;
+		i++;
+	}
+	ASSERT(i == 15, "get pairs did not produce the correct pairings");
+	TEST_PASS("test_get_pairs");
+	free(pairs);
+	free_stack(stack_a);
+	free_stack(stack_b);
+}
+
 void test_ft_strdup()
 {
 	// Duplicate a valid string

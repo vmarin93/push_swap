@@ -54,6 +54,8 @@ Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops);
 
 Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops);
 
+void push_to_b(Stack *stack_a, Stack *stack_b, char **ops);
+
 int is_sorted(Stack *stack);
 
 int is_rev_sorted(Stack *stack);
@@ -65,6 +67,8 @@ int find_smallest(Stack *stack);
 int find_steps_to_top(Stack *stack, int value);
 
 int find_pair(int value, Stack *stack);
+
+int *get_pairs(Stack *stack_a, Stack *stack_b);
 
 void register_ops(char *op, char **ops);
 
