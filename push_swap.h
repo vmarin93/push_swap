@@ -38,6 +38,8 @@ long push(Stack *stack, int number);
 
 long pop(Stack *stack);
 
+long stack_sum(Stack *stack);
+
 long swap_top(Stack *stack);
 
 long rotate_stack(Stack *stack);
@@ -61,6 +63,8 @@ int find_largest(Stack *stack);
 int find_smallest(Stack *stack);
 
 int find_steps_to_top(Stack *stack, int value);
+
+int find_pair(int value, Stack *stack);
 
 void register_ops(char *op, char **ops);
 

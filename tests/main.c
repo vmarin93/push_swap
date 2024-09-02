@@ -14,6 +14,11 @@ int main()
 	test_is_sorted();
 	test_find_smallest();
 	test_find_largest();
+	test_find_steps_to_top();
+	test_stack_sum();
+	test_find_pair();
+	test_ft_strdup();
+	test_register_and_free_ops();
 	
 	// Run sorting tests
 	printf("\nSorting tests: \n");

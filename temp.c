@@ -74,7 +74,7 @@ int find_steps_to_top(Stack *stack, int value)
 	return (-1);
 }
 
-long ft_sum(Stack *stack)
+long stack_sum(Stack *stack)
 {
 	long	sum;
 	int	i;

@@ -35,5 +35,10 @@ void test_sort_size_3();
 void test_is_sorted();
 void test_find_smallest();
 void test_find_largest();
+void test_find_steps_to_top();
+void test_stack_sum();
+void test_find_pair();
+void test_ft_strdup();
+void test_register_and_free_ops();
 
 #endif
