@@ -149,7 +149,6 @@ void test_get_pairs()
 	i = 0;
 	while(i < 14)
 	{
-		printf("%d\n", pairs[i]);
 		if (pairs[i] != expected_pairs[i])
 			break;
 		i++;

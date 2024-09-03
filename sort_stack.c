@@ -1,4 +1,5 @@
 #include "push_swap.h"
+#include <limits.h>
 
 void	push_to_b(Stack *stack_a, Stack *stack_b, char **ops)
 {
@@ -44,11 +45,39 @@ int	*get_pairs(Stack *stack_a, Stack *stack_b)
 	return (pairs);
 }
 
+void	fill_go_top_box(Stack *stack_a, Stack *stack_b, int *pairs, Box *go_top)
+{
+	int	total_steps;
+	int	current_steps_a;
+	int	current_steps_b;
+	int	i;
+
+	total_steps = INT_MAX;
+	i = 0;
+	while (i < (2 * stack_b->top) - 1)
+	{
+		current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
+		current_steps_b = find_steps_to_top(stack_b, pairs[i]);
+		if ((current_steps_a + current_steps_b) < total_steps)
+		{
+			go_top->value_top_a = pairs[i + 1];
+			go_top->value_top_b = pairs[i];
+			go_top->steps_top_a = current_steps_a;
+			go_top->steps_top_b = current_steps_b;
+			total_steps = current_steps_a + current_steps_b;
+		}
+		i += 2;
+	}
+}
+
 //void	push_to_a(Stack *stack_a, Stack *stack_b, char **ops)
 //{
 //	int	*pairs;
+//	Box	go_top;
 //
 //	pairs = get_pairs(stack_a, stack_b);
+//	fill_go_top_box(stack_a, stack_b, pairs, &go_top);
+//	free(pairs);
 //}
 
 Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, char **ops)

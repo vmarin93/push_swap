@@ -33,6 +33,7 @@ void test_sort_size_3();
 void test_sort_size_4();
 void test_sort_size_5();
 void test_push_to_b();
+void test_fill_go_top_box();
 
 // Auxiliary functions tests
 void test_is_sorted();

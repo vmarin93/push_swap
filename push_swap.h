@@ -24,6 +24,13 @@ typedef struct {
 	int	size;
 }Stack;
 
+typedef struct {
+	int	value_top_a;
+	int	value_top_b;
+	int	steps_top_a;
+	int	steps_top_b;
+}Box;
+
 Stack *create_stack(int size);
 
 void free_stack(Stack *stack);
@@ -55,6 +62,8 @@ Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops);
 Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops);
 
 void push_to_b(Stack *stack_a, Stack *stack_b, char **ops);
+
+void fill_go_top_box(Stack *stack_a, Stack *stack_b, int *pairs, Box *go_top);
 
 int is_sorted(Stack *stack);
 

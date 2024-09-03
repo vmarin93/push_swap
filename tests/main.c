@@ -28,5 +28,6 @@ int main()
 	test_sort_size_4();
 	test_sort_size_5();
 	test_push_to_b();
+	test_fill_go_top_box();
 	printf("\n");
 }

@@ -1,5 +1,6 @@
 #include "tests.h"
 #include "../push_swap.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -145,4 +146,29 @@ void test_push_to_b()
 	}
 	ASSERT(i = -1, "push_to_b did not transfer the correct values from stack_a to stack_b");
 	TEST_PASS("test_push_to_b");
+}
+
+void test_fill_go_top_box()
+{
+	Box	go_top;
+	Stack	*stack_a = create_stack(12);
+	Stack	*stack_b = create_stack(12);
+	if (stack_a == NULL || stack_b == NULL)
+		return ;
+	int	numbers_a[5] = {64, 88, 91, 78, 65};
+	int	numbers_b[7] = {15, 9, 27, 33, 12, 43, 75};
+	int	pairs[14] = {75, 78, 43, 64, 12, 64, 33, 64, 27, 64, 9, 64, 15, 64};
+	memcpy(stack_a->numbers, numbers_a, sizeof(numbers_a));
+	stack_a->top = 4;
+	memcpy(stack_b->numbers, numbers_b, sizeof(numbers_b));
+	stack_b->top = 6;
+
+	fill_go_top_box(stack_a, stack_b, pairs, &go_top);
+	ASSERT(go_top.value_top_a == 78, "incorrect value_top_a");
+	ASSERT(go_top.value_top_b == 75, "incorrect value_top_b");
+	ASSERT(go_top.steps_top_a == 1, "incorrect steps_top_a");
+	ASSERT(go_top.steps_top_b == 0, "incorrect steps_top_b");
+	TEST_PASS("test_fill_go_top_box");
+	free_stack(stack_a);
+	free_stack(stack_b);
 }
