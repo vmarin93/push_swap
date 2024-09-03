@@ -34,6 +34,9 @@ void test_sort_size_4();
 void test_sort_size_5();
 void test_push_to_b();
 void test_fill_go_top_box();
+void test_move_to_top_a();
+void test_move_to_top_b();
+void test_sort_stack();
 
 // Auxiliary functions tests
 void test_is_sorted();

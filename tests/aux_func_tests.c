@@ -179,20 +179,27 @@ void test_ft_strdup()
 
 void test_register_and_free_ops()
 {
-	char	*ops[15000] = {0};
+	Operations	ops = {0};
 	char	*op = "test_op";
 	int	i = 0;
 
 	// Register 10 operations
 	while (i < 10)
 	{
-		register_ops(op, ops);
-		ASSERT(strcmp(ops[i], op) == 0, "operation was not registered properly");
+		register_ops(op, &ops);
+		ASSERT(strcmp(ops.ops[i], op) == 0, "operation was not registered properly");
 		i++;
 	}
+	ASSERT(ops.count == 10, "Operation count is inccorect");
 
 	// Free the ops array
-	free_ops(ops);
-	ASSERT(ops[0] == NULL, "ops array was not freed up properly");
+	free_ops(&ops);
+	i = 0;
+	while (i < 10)
+	{
+		ASSERT(ops.ops[i] == NULL, "ops array was not set to NULL after freeing");
+		i++;
+	}
+	ASSERT(ops.count == 0, "Operation count was not reset to 0 after freeing");
 	TEST_PASS("test_register_and_free_ops");
 }

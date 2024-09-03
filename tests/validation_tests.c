@@ -48,4 +48,5 @@ void test_fill_stack()
 	ASSERT(result == 0, "the numbers inside the stack should be exactly the numbers in the input");
 	ASSERT(peek(test_stack) == 3, "the top of the stack should be the 0th index number in the input array");
 	TEST_PASS("test_fill_stack");
+	free_stack(test_stack);
 }

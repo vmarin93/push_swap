@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-Stack *sort_size_3(Stack *stack_a, char **ops)
+Stack *sort_size_3(Stack *stack_a, Operations *ops)
 {
 	int	top;
 	int	bottom;
@@ -45,7 +45,7 @@ Stack *sort_size_3(Stack *stack_a, char **ops)
 	return (stack_a);
 }
 
-Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops)
+Stack *sort_size_4(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	int	smallest;
 	int	steps_to_top;
@@ -73,7 +73,7 @@ Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops)
 	return(stack_a);
 }
 
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops)
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	int	smallest;
 	int	largest;

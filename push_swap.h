@@ -31,6 +31,11 @@ typedef struct {
 	int	steps_top_b;
 }Box;
 
+typedef struct {
+	char	*ops[15000];
+	int	count;
+}Operations;
+
 Stack *create_stack(int size);
 
 void free_stack(Stack *stack);
@@ -53,17 +58,21 @@ long rotate_stack(Stack *stack);
 
 long rev_rotate_stack(Stack *stack);
 
-Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops);
+Stack *sort_stack(Stack *stack_a, Stack *stack_b, Operations *ops);
 
-Stack *sort_size_3(Stack *stack_a, char **ops);
+Stack *sort_size_3(Stack *stack_a, Operations *ops);
 
-Stack *sort_size_4(Stack *stack_a, Stack *stack_b, char **ops);
+Stack *sort_size_4(Stack *stack_a, Stack *stack_b, Operations *ops);
 
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, char **ops);
+Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops);
 
-void push_to_b(Stack *stack_a, Stack *stack_b, char **ops);
+void push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops);
 
 void fill_go_top_box(Stack *stack_a, Stack *stack_b, int *pairs, Box *go_top);
+
+void move_to_top_a(Stack *stack_a, Box *go_top, Operations *ops);
+
+void move_to_top_b(Stack *stack_b, Box *go_top, Operations *ops);
 
 int is_sorted(Stack *stack);
 
@@ -79,9 +88,9 @@ int find_pair(int value, Stack *stack);
 
 int *get_pairs(Stack *stack_a, Stack *stack_b);
 
-void register_ops(char *op, char **ops);
+void register_ops(char *op, Operations *ops);
 
-void free_ops(char **ops);
+void free_ops(Operations *ops);
 
 int ft_strlen(const char *str);
 

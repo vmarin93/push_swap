@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 {
 	Stack	*stack_a;
 	Stack	*stack_b;
-	char	*ops[15000];
+	Operations	ops = {0};
 
 	stack_a = create_stack(argc - 1);
 	if (stack_a == NULL)
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
 	if (stack_b == NULL)
 		return (1);
 	validate_input(argc, argv, stack_a);
-	sort_stack(stack_a, stack_b, ops);
+	sort_stack(stack_a, stack_b, &ops);
 	free_stack(stack_a);
 	free_stack(stack_b);
-	free_ops(ops);
+	free_ops(&ops);
 	return (0);
 }

@@ -24,7 +24,9 @@ Stack *create_stack(int size)
 void free_stack(Stack *stack)
 {
 	free(stack->numbers);
+	stack->numbers = NULL;
 	free(stack);
+	stack = NULL;
 }
 
 int full_stack(const Stack *stack)
