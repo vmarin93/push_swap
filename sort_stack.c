@@ -38,11 +38,8 @@ int	*get_pairs(Stack *stack_a, Stack *stack_b)
 	{
 		pairs[i] = stack_b->numbers[j];
 		i++;
-		if (find_pair(stack_b->numbers[j], stack_a) != -1)
-		{
-			pairs[i] = find_pair(stack_b->numbers[j], stack_a);
-			i++;
-		}
+		pairs[i] = find_pair(stack_b->numbers[j], stack_a);
+		i++;
 		j--;
 	}
 	return (pairs);
@@ -126,11 +123,34 @@ void	push_to_a(Stack *stack_a, Stack *stack_b, Operations *ops)
 	}
 }
 
+void bring_largest_to_bottom(Stack *stack_a, Operations *ops)
+{
+	int	largest;
+	int	steps_top;
+
+	largest = find_largest(stack_a);
+	steps_top = find_steps_to_top(stack_a, largest);
+	while (stack_a->numbers[0] != largest)
+	{
+		if (steps_top < stack_a->top / 2)
+		{
+			rev_rotate_stack(stack_a);
+			register_ops("rra\n", ops);
+		}
+		else
+		{
+			rotate_stack(stack_a);
+			register_ops("ra\n", ops);
+		}
+	}
+}
+
 Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	push_to_b(stack_a, stack_b, ops);
 	sort_size_5(stack_a, stack_b, ops);
 	push_to_a(stack_a, stack_b, ops);
+	bring_largest_to_bottom(stack_a, ops);
 	return (stack_a);
 }
 

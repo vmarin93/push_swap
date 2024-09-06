@@ -97,8 +97,6 @@ int find_pair(int value, Stack *stack)
 	int	pair;
 	int	i;
 	int	perfect_pairing;
-	int	smallest = INT_MAX;
-	int	largest = INT_MIN;
 
 	if (!stack)
 		return (-1);
@@ -107,22 +105,15 @@ int find_pair(int value, Stack *stack)
 	i = stack->top;
 	while (i >= 0)
 	{
-		if (stack->numbers[i] < smallest)
-			smallest = stack->numbers[i];
-		if (stack->numbers[i] > largest)
-			largest = stack->numbers[i];
-		if (stack->numbers[i] > value && stack->numbers[i] - value < perfect_pairing)
+		if (stack->numbers[i] > value && ((stack->numbers[i] - value) < perfect_pairing))
 		{
 			pair = stack->numbers[i];
 			perfect_pairing = stack->numbers[i] - value;
 		}
 		i--;
 	}
-	if (pair == -1 || (value > largest && smallest - value < perfect_pairing))
-		pair = smallest;
 	return (pair);
 }
-
 
 int ft_strlen(const char *str)
 {
@@ -154,16 +145,50 @@ char *ft_strdup(char *str)
 	return (dup);
 }
 
+void	squash_ops(char *op, Operations *ops, int *squashed)
+{
+	char	*prev_op = ops->ops[ops->count - 1];
+	char	*new_op = NULL;
+
+	*squashed = 0;
+	if (ft_strcmp(prev_op, "rrb\n") == 0 && ft_strcmp(op, "rra\n") == 0)
+		new_op = "rrr\n";
+	else if (ft_strcmp(prev_op, "rra\n") == 0 && ft_strcmp(op, "rrb\n") == 0)
+		new_op = "rrr\n";
+	else if (ft_strcmp(prev_op, "ra\n") == 0 && ft_strcmp(op, "rb\n") == 0)
+		new_op = "rr\n";
+	else if (ft_strcmp(prev_op, "rb\n") == 0 && ft_strcmp(op, "ra\n") == 0)
+		new_op = "rr\n";
+	if (new_op)
+	{
+		free(prev_op);
+		ops->ops[ops->count - 1] = ft_strdup(new_op);
+		if (ops->ops[ops->count - 1] == NULL)
+			exit(1);
+		*squashed = 1;
+	}
+}
+
 void register_ops(char *op, Operations *ops)
 {
+	int	squashed;
+
+	squashed = 0;
 	if (op == NULL || ops == NULL)
 		exit(1);
 	if (ops->count >= 14999)
 		exit(1);
-	ops->ops[ops->count] = ft_strdup(op);
-	if (ops->ops[ops->count] == NULL)
-		exit(1);
-	ops->count++;
+	if (ops->count > 0)
+	{
+		squash_ops(op, ops, &squashed);
+	}
+	if (!squashed)
+	{
+		ops->ops[ops->count] = ft_strdup(op);
+		if (ops->ops[ops->count] == NULL)
+			exit(1);
+		ops->count++;
+	}
 }
 
 void free_ops(Operations *ops)
@@ -180,141 +205,6 @@ void free_ops(Operations *ops)
 	ops->count = 0;
 }
 
-//Stack *sort_stack(Stack *stack_a, Stack *stack_b, char **ops) 
-//{
-//	long	mean_value;
-//	int	*pairs;
-//	int	i;
-//	int	j;
-//	int	largest_stack_a;
-//	
-//	if (is_sorted(stack_a))
-//		return (stack_a);
-//	else if (stack_a->top == 2)
-//		sort_size_3(stack_a, ops);
-//	else if (stack_a->top == 3)
-//		sort_size_4(stack_a, stack_b, ops);
-//	else if (stack_a->top == 4)
-//		sort_size_5(stack_a, stack_b, ops);
-//	largest_stack_a = find_largest(stack_a);
-//	while (stack_a->top >= 5)
-//	{
-//		mean_value = (ft_sum(stack_a) / stack_a->top + 1);
-//		if (peek(stack_a) > mean_value)
-//		{
-//			rotate_stack(stack_a);
-//			register_ops("ra\n", ops);
-//		}
-//		else
-//		{
-//			push(stack_b, pop(stack_a));
-//			register_ops("pb\n", ops);
-//		}
-//	}
-//	sort_size_5(stack_a, stack_b, ops);
-//	while (!empty_stack(stack_b))
-//	{
-//		int	steps_stack_a;
-//		int	steps_stack_b;
-//		int	value_top_a;
-//		int	value_top_b;
-//		int	total_steps;
-//
-//		pairs = malloc(sizeof(int) * (2 * stack_b->top + 2));
-//		if (pairs == NULL)
-//			return (NULL);
-//		total_steps = INT_MAX;
-//		value_top_a = -1;
-//		value_top_b = -1;
-//		steps_stack_a = -1;
-//		steps_stack_b = -1;
-//		i = 0;
-//		j = stack_b->top;
-//		while (j >= 0)
-//		{
-//			pairs[i] = stack_b->numbers[j];
-//			i++;
-//			if (find_pair(stack_b->numbers[j], stack_a) != -1)
-//			{
-//				pairs[i] = find_pair(stack_b->numbers[j], stack_a);
-//			}
-//			i++;
-//			j--;
-//		}
-//		i = 0;
-//		while (i <= (2 * stack_b->top))
-//		{
-//			int	current_steps_b;
-//			int	current_steps_a;
-//			
-//			current_steps_b = find_steps_to_top(stack_b, pairs[i]);
-//			current_steps_a = find_steps_to_top(stack_a, pairs[i + 1]);
-//			if (current_steps_a < 0 || current_steps_b < 0)
-//			{
-//				i += 2;
-//				continue ;
-//			}
-//			if ((current_steps_b + current_steps_a) < total_steps)
-//			{
-//				value_top_a = pairs[i + 1];
-//				value_top_b = pairs[i];
-//				total_steps = current_steps_a + current_steps_b;
-//				steps_stack_a = current_steps_a;
-//				steps_stack_b = current_steps_b;
-//			}
-//			i += 2;
-//		}
-//		free(pairs);
-//		while (peek(stack_a) != value_top_a)
-//		{
-//			if (value_top_a == -1)
-//				break ;
-//			if (steps_stack_a > stack_a->top / 2)
-//			{
-//				rev_rotate_stack(stack_a);
-//				register_ops("rra\n", ops);
-//			}
-//			else
-//			{
-//				rotate_stack(stack_a);
-//				register_ops("ra\n", ops);
-//			}
-//		}
-//		while (peek(stack_b) != value_top_b)
-//		{
-//			if (value_top_b == -1)
-//				break;
-//			if (steps_stack_b > stack_b->top / 2)
-//			{
-//				rev_rotate_stack(stack_b);
-//				register_ops("rrb\n", ops);
-//			}
-//			else
-//			{
-//				rotate_stack(stack_b);
-//				register_ops("ra\n", ops);
-//			}
-//		}
-//		push(stack_a, pop(stack_b));
-//		register_ops("pa\n", ops);
-//		
-//	}
-//	while (stack_a->numbers[0] != largest_stack_a)
-//	{
-//		if (find_steps_to_top(stack_a, largest_stack_a) > stack_a->top / 2)
-//		{
-//			rev_rotate_stack(stack_a);
-//			register_ops("rra\n", ops);
-//		}
-//		else 
-//		{
-//			rotate_stack(stack_a);
-//			register_ops("ra\n", ops);
-//		}
-//	}
-//	return (stack_a);
-//}
-
 int ft_strcmp(const char *str1, const char *str2)
 {
 	int	i;
@@ -323,8 +213,8 @@ int ft_strcmp(const char *str1, const char *str2)
 	while (str1[i] != '\0' || str2[i] != '\0')
 	{
 		if (str1[i] != str2[i])
-			return (0);
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }

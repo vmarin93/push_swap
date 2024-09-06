@@ -32,6 +32,15 @@ typedef struct {
 }Box;
 
 typedef struct {
+	int	current_pair;
+	int	steps_top_number;
+	int	steps_top_pair;
+	int	best_pair;
+	int	number;
+	int	pair;
+}Test;
+
+typedef struct {
 	char	*ops[15000];
 	int	count;
 }Operations;
