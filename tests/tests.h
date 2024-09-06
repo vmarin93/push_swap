@@ -45,7 +45,6 @@ void test_find_largest();
 void test_find_steps_to_top();
 void test_stack_sum();
 void test_find_pair();
-void test_get_pairs();
 void test_ft_strdup();
 void test_register_and_free_ops();
 

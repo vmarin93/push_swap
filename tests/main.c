@@ -17,7 +17,6 @@ int main()
 	test_find_steps_to_top();
 	test_stack_sum();
 	test_find_pair();
-	test_get_pairs();
 	test_ft_strdup();
 	test_register_and_free_ops();
 	

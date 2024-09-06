@@ -151,13 +151,12 @@ void test_fill_go_top_box()
 		return ;
 	int	numbers_a[5] = {64, 88, 91, 78, 65};
 	int	numbers_b[7] = {15, 9, 27, 33, 12, 43, 75};
-	int	pairs[14] = {75, 78, 43, 64, 12, 64, 33, 64, 27, 64, 9, 64, 15, 64};
 	memcpy(stack_a->numbers, numbers_a, sizeof(numbers_a));
 	stack_a->top = 4;
 	memcpy(stack_b->numbers, numbers_b, sizeof(numbers_b));
 	stack_b->top = 6;
 
-	fill_go_top_box(stack_a, stack_b, pairs, &go_top);
+	fill_go_top_box(stack_a, stack_b, &go_top);
 	ASSERT(go_top.value_top_a == 78, "incorrect value_top_a");
 	ASSERT(go_top.value_top_b == 75, "incorrect value_top_b");
 	ASSERT(go_top.steps_top_a == 1, "incorrect steps_top_a");

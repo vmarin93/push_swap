@@ -25,20 +25,15 @@ typedef struct {
 }Stack;
 
 typedef struct {
+	int	current_pair;
+	int	current_steps_a;
+	int	current_steps_b;
+	int	total_steps;
 	int	value_top_a;
 	int	value_top_b;
 	int	steps_top_a;
 	int	steps_top_b;
 }Box;
-
-typedef struct {
-	int	current_pair;
-	int	steps_top_number;
-	int	steps_top_pair;
-	int	best_pair;
-	int	number;
-	int	pair;
-}Test;
 
 typedef struct {
 	char	*ops[15000];
@@ -77,7 +72,7 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops);
 
 void push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops);
 
-void fill_go_top_box(Stack *stack_a, Stack *stack_b, int *pairs, Box *go_top);
+void fill_go_top_box(Stack *stack_a, Stack *stack_b, Box *go_top);
 
 void move_to_top_a(Stack *stack_a, Box *go_top, Operations *ops);
 
@@ -94,8 +89,6 @@ int find_smallest(Stack *stack);
 int find_steps_to_top(Stack *stack, int value);
 
 int find_pair(int value, Stack *stack);
-
-int *get_pairs(Stack *stack_a, Stack *stack_b);
 
 void register_ops(char *op, Operations *ops);
 
