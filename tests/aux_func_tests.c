@@ -81,7 +81,7 @@ void test_find_steps_to_top()
 
 	// Test number is at the bottom
 	steps = find_steps_to_top(test_stack, 1);
-	ASSERT(steps == 9, "did not find the steps to the top when value is the bottom");
+	ASSERT(steps == 1, "did not find the steps to the top when value is the bottom");
 
 	// Test number is in the middle
 	steps = find_steps_to_top(test_stack, 5);

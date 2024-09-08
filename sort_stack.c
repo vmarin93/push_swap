@@ -4,9 +4,9 @@
 void	push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	long	average;
+	average = (stack_sum(stack_a) / (stack_a->top + 1));
 	while (stack_a->top >= 5)
 	{
-		average = (stack_sum(stack_a) / (stack_a->top + 1));
 		if (peek(stack_a) > average)
 		{
 			rotate_stack(stack_a);
@@ -16,6 +16,7 @@ void	push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops)
 		{
 			push(stack_b, pop(stack_a));
 			register_ops("pb\n", ops);
+			average = (stack_sum(stack_a) / (stack_a->top + 1));
 		}
 	}
 }
@@ -48,36 +49,82 @@ void fill_go_top_box(Stack *stack_a, Stack *stack_b, Box *go_top)
 
 void move_to_top_a(Stack *stack_a, Box *go_top, Operations *ops)
 {
-	while (peek(stack_a) != go_top->value_top_a)
+	int	value_index;
+	int	i;
+
+	value_index = find_index(stack_a, go_top->value_top_a);
+//	while (peek(stack_a) != go_top->value_top_a)
+//	{
+//		if (value_index < stack_a->top / 2)
+//		{
+//			rev_rotate_stack(stack_a);
+//			register_ops("rra\n", ops);
+//		}
+//		else
+//		{
+//			rotate_stack(stack_a);
+//			register_ops("ra\n", ops);
+//		}
+//	}
+	if ((stack_a->top / 2) <= value_index)
 	{
-		if (go_top->steps_top_a > stack_a->top / 2)
-		{
-			rev_rotate_stack(stack_a);
-			register_ops("rra\n", ops);
-		}
-		else
+		i = go_top->steps_top_a;
+		while (i)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
+			i--;
+		}
+	}
+	else if ((stack_a->top / 2) > value_index)
+	{
+		i = go_top->steps_top_a;
+		while (i)
+		{
+			rev_rotate_stack(stack_a);
+			register_ops("rra\n", ops);
+			i--;
 		}
 	}
 }
 
 void move_to_top_b(Stack *stack_b, Box *go_top, Operations *ops)
 {
-	if (peek(stack_b) == go_top->value_top_b)
-		return ;
-	while (peek(stack_b) != go_top->value_top_b)
+	int	value_index;
+	int	i;
+
+	value_index = find_index(stack_b, go_top->value_top_b);
+//	while (peek(stack_b) != go_top->value_top_b)
+//	{
+//		if (value_index < stack_b->top / 2)
+//		{
+//			rev_rotate_stack(stack_b);
+//			register_ops("rrb\n", ops);
+//		}
+//		else
+//		{
+//			rotate_stack(stack_b);
+//			register_ops("rb\n", ops);
+//		}
+//	}
+	if ((stack_b->top / 2) <= value_index)
 	{
-		if (go_top->steps_top_b > stack_b->top / 2)
-		{
-			rev_rotate_stack(stack_b);
-			register_ops("rrb\n", ops);
-		}
-		else
+		i = go_top->steps_top_b;
+		while (i)
 		{
 			rotate_stack(stack_b);
 			register_ops("rb\n", ops);
+			i--;
+		}
+	}
+	else if ((stack_b->top / 2) > value_index)
+	{
+		i = go_top->steps_top_b;
+		while (i) 
+		{
+			rev_rotate_stack(stack_b);
+			register_ops("rrb\n", ops);
+			i--;
 		}
 	}
 }

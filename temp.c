@@ -56,6 +56,20 @@ int find_smallest(Stack *stack)
 	return (smallest);
 }
 
+int find_index(Stack *stack, int value)
+{
+	int	index;
+
+	index = 0;
+	while (index <= stack->top)
+	{
+		if (stack->numbers[index] == value)
+			return (index);
+		index++;
+	}
+	return (index);
+}
+
 int find_steps_to_top(Stack *stack, int value)
 {
 	int	steps;
@@ -64,14 +78,20 @@ int find_steps_to_top(Stack *stack, int value)
 	if (!stack)
 		return (-1);
 	steps = 0;
+	if (peek(stack) == value)
+		return (steps);
 	i = stack->top;
 	while (i >= 0)
 	{
 		if (stack->numbers[i] == value)
-			return(steps);
+			break ;	
 		steps++;
 		i--;
 	}
+	if (steps <= (stack->top / 2))
+		return (steps);
+	else
+		return (stack->top - steps + 1);
 	return (-1);
 }
 

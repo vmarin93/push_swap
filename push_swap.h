@@ -88,6 +88,8 @@ int find_smallest(Stack *stack);
 
 int find_steps_to_top(Stack *stack, int value);
 
+int find_index(Stack *stack, int value);
+
 int find_pair(int value, Stack *stack);
 
 void register_ops(char *op, Operations *ops);

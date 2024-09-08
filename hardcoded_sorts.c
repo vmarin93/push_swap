@@ -48,13 +48,13 @@ Stack *sort_size_3(Stack *stack_a, Operations *ops)
 Stack *sort_size_4(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	int	smallest;
-	int	steps_to_top;
+	int	index;
 
 	smallest = find_smallest(stack_a);
-	steps_to_top = find_steps_to_top(stack_a, smallest);
+	index = find_index(stack_a, smallest);
 	while (peek(stack_a) != smallest)
 	{
-		if (steps_to_top < 2)
+		if (index >= 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
@@ -77,14 +77,14 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops)
 {
 	int	smallest;
 	int	largest;
-	int	steps_to_top;
+	int	index;
 
 	smallest = find_smallest(stack_a);
 	largest = find_largest(stack_a);
-	steps_to_top = find_steps_to_top(stack_a, smallest);
+	index = find_index(stack_a, smallest);
 	while(peek(stack_a) != smallest)
 	{
-		if (steps_to_top < 2)
+		if (index >= 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);
@@ -97,10 +97,10 @@ Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops)
 	}
 	push(stack_b, pop(stack_a));
 	register_ops("pb\n", ops);
-	steps_to_top = find_steps_to_top(stack_a, largest);
+	index = find_index(stack_a, largest);
 	while(peek(stack_a) != largest)
 	{
-		if (steps_to_top < 2)
+		if (index >= 2)
 		{
 			rotate_stack(stack_a);
 			register_ops("ra\n", ops);

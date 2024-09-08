@@ -174,10 +174,9 @@ void test_move_to_top_a()
 	if (stack_a == NULL)
 		return ;
 	int	numbers[5] = {64, 88, 91, 78, 65};
-	memcpy(stack_a->numbers, numbers, sizeof(numbers));
-	stack_a->top = 4;
+	fill_stack(numbers, 5, stack_a);
 	go_top.value_top_a = 88;
-	go_top.steps_top_a = 3;
+	go_top.steps_top_a = 1;
 
 	move_to_top_a(stack_a, &go_top, &ops);
 	ASSERT(peek(stack_a) == 88, "value was not moved to the top of stack a");
@@ -194,10 +193,9 @@ void test_move_to_top_b()
 	if (stack_b == NULL)
 		return ;
 	int	numbers[7] = {15, 9, 27, 33, 12, 43, 75};
-	memcpy(stack_b->numbers, numbers, sizeof(numbers));
-	stack_b->top = 6;
+	fill_stack(numbers, 7, stack_b);
 	go_top.value_top_b = 27;
-	go_top.steps_top_b = 4;
+	go_top.steps_top_b = 2;
 
 	move_to_top_b(stack_b, &go_top, &ops);
 	ASSERT(peek(stack_b) == 27, "value was not moved to the top of stack b");
