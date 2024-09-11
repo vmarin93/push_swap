@@ -1,11 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_input.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmarin <vmarin@42london.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 12:51:42 by vmarin            #+#    #+#             */
+/*   Updated: 2024/09/11 13:02:43 by vmarin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-int *do_int_conversion(int argc, char *argv[])
+long	do_int_conversion(char *arg, int *input)
+{
+	long	number;
+	char	*endptr;
+
+	number = ft_strtol(arg, &endptr);
+	if (*endptr != '\0' || endptr == arg
+		|| number == LONG_MAX || number == LONG_MIN)
+	{
+		write(2, "Error\n", 6);
+		free(input);
+		exit(1);
+	}
+	return (number);
+}
+
+int	*get_input(int argc, char *argv[])
 {
 	int	*input;
 	int	i;
-	long	number;
-	char	*endptr;
 
 	input = malloc(sizeof(int) * (argc - 1));
 	if (input == NULL)
@@ -13,20 +39,13 @@ int *do_int_conversion(int argc, char *argv[])
 	i = 0;
 	while (i < argc - 1)
 	{
-		number = ft_strtol(argv[i + 1], &endptr);
-		if (*endptr != '\0' || endptr == argv[i + 1] || number == LONG_MAX || number == LONG_MIN)
-		{
-			write(2, "Error\n", 6);
-			free(input);
-			exit(1);
-		}
-		input[i] = (int)number;
+		input[i] = do_int_conversion(argv[i + 1], input);
 		i++;
 	}
 	return (input);
 }
 
-int check_for_duplicates(int *input, int len)
+int	check_for_duplicates(int *input, int len)
 {
 	int	i;
 	int	j;
@@ -46,7 +65,7 @@ int check_for_duplicates(int *input, int len)
 	return (0);
 }
 
-void fill_stack(int *input, int len, Stack *stack_a)
+void	fill_stack(int *input, int len, t_Stack *stack_a)
 {
 	int	i;
 
@@ -58,14 +77,14 @@ void fill_stack(int *input, int len, Stack *stack_a)
 	}
 }
 
-void validate_input(int argc, char *argv[], Stack *stack_a)
+void	validate_input(int argc, char *argv[], t_Stack *stack_a)
 {
 	int	*input;
 	int	duplicates;
 
 	if (argc < 2)
 		exit(1);
-	input = do_int_conversion(argc, argv);
+	input = get_input(argc, argv);
 	duplicates = check_for_duplicates(input, argc - 1);
 	if (duplicates)
 	{

@@ -1,9 +1,21 @@
-#include "push_swap.h"
-#include <limits.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_stack.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmarin <vmarin@42london.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/09 09:33:19 by vmarin            #+#    #+#             */
+/*   Updated: 2024/09/09 09:34:49 by vmarin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops)
+#include "push_swap.h"
+
+void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
 	long	average;
+
 	average = (stack_sum(stack_a) / (stack_a->top + 1));
 	while (stack_a->top >= 5)
 	{
@@ -21,117 +33,9 @@ void	push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops)
 	}
 }
 
-void fill_go_top_box(Stack *stack_a, Stack *stack_b, Box *go_top)
+void	push_to_a(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
-	int	i;
-
-	go_top->total_steps = INT_MAX;
-	i = stack_b->top;
-	while (i >= 0)
-	{
-		go_top->current_pair = find_pair(stack_b->numbers[i], stack_a);
-		if (go_top->current_pair != -1)
-		{
-			go_top->current_steps_a = find_steps_to_top(stack_a, go_top->current_pair);
-			go_top->current_steps_b = find_steps_to_top(stack_b, stack_b->numbers[i]);
-			if ((go_top->current_steps_a + go_top->current_steps_b) < go_top->total_steps)
-			{
-				go_top->value_top_a = go_top->current_pair;
-				go_top->value_top_b = stack_b->numbers[i];
-				go_top->steps_top_a = go_top->current_steps_a;
-				go_top->steps_top_b = go_top->current_steps_b;
-				go_top->total_steps = go_top->current_steps_a + go_top->current_steps_b;
-			}
-		}
-		i--;
-	}
-}
-
-void move_to_top_a(Stack *stack_a, Box *go_top, Operations *ops)
-{
-	int	value_index;
-	int	i;
-
-	value_index = find_index(stack_a, go_top->value_top_a);
-//	while (peek(stack_a) != go_top->value_top_a)
-//	{
-//		if (value_index < stack_a->top / 2)
-//		{
-//			rev_rotate_stack(stack_a);
-//			register_ops("rra\n", ops);
-//		}
-//		else
-//		{
-//			rotate_stack(stack_a);
-//			register_ops("ra\n", ops);
-//		}
-//	}
-	if ((stack_a->top / 2) <= value_index)
-	{
-		i = go_top->steps_top_a;
-		while (i)
-		{
-			rotate_stack(stack_a);
-			register_ops("ra\n", ops);
-			i--;
-		}
-	}
-	else if ((stack_a->top / 2) > value_index)
-	{
-		i = go_top->steps_top_a;
-		while (i)
-		{
-			rev_rotate_stack(stack_a);
-			register_ops("rra\n", ops);
-			i--;
-		}
-	}
-}
-
-void move_to_top_b(Stack *stack_b, Box *go_top, Operations *ops)
-{
-	int	value_index;
-	int	i;
-
-	value_index = find_index(stack_b, go_top->value_top_b);
-//	while (peek(stack_b) != go_top->value_top_b)
-//	{
-//		if (value_index < stack_b->top / 2)
-//		{
-//			rev_rotate_stack(stack_b);
-//			register_ops("rrb\n", ops);
-//		}
-//		else
-//		{
-//			rotate_stack(stack_b);
-//			register_ops("rb\n", ops);
-//		}
-//	}
-	if ((stack_b->top / 2) <= value_index)
-	{
-		i = go_top->steps_top_b;
-		while (i)
-		{
-			rotate_stack(stack_b);
-			register_ops("rb\n", ops);
-			i--;
-		}
-	}
-	else if ((stack_b->top / 2) > value_index)
-	{
-		i = go_top->steps_top_b;
-		while (i) 
-		{
-			rev_rotate_stack(stack_b);
-			register_ops("rrb\n", ops);
-			i--;
-		}
-	}
-}
-
-void	push_to_a(Stack *stack_a, Stack *stack_b, Operations *ops)
-{
-	Box	go_top;
+	t_Box	go_top;
 
 	while (!empty_stack(stack_b))
 	{
@@ -143,7 +47,7 @@ void	push_to_a(Stack *stack_a, Stack *stack_b, Operations *ops)
 	}
 }
 
-void bring_largest_to_bottom(Stack *stack_a, Operations *ops)
+void	bring_largest_to_bottom(t_Stack *stack_a, t_Operations *ops)
 {
 	int	largest;
 	int	steps_top;
@@ -165,7 +69,7 @@ void bring_largest_to_bottom(Stack *stack_a, Operations *ops)
 	}
 }
 
-Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, Operations *ops)
+t_Stack	*sort_large_stack(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
 	push_to_b(stack_a, stack_b, ops);
 	sort_size_5(stack_a, stack_b, ops);
@@ -174,12 +78,12 @@ Stack *sort_large_stack(Stack *stack_a, Stack *stack_b, Operations *ops)
 	return (stack_a);
 }
 
-Stack *sort_stack(Stack *stack_a, Stack *stack_b, Operations *ops)
+t_Stack	*sort_stack(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
 	if (is_sorted(stack_a))
 		return (stack_a);
 	else if (stack_a->top == 0)
-		return(stack_a);
+		return (stack_a);
 	else if (stack_a->top == 1)
 	{
 		if (stack_a->numbers[stack_a->top] > stack_a->numbers[0])

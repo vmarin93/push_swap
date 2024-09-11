@@ -1,25 +1,35 @@
-#include <limits.h>
-#include <stddef.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtol.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmarin <vmarin@42london.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/09 09:34:55 by vmarin            #+#    #+#             */
+/*   Updated: 2024/09/09 09:39:06 by vmarin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-int ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	if ((c >= 9 && c <= 13) || c == 32)
 		return (1);
 	return (0);
 }
 
-int ft_isdigit(char c)
+int	ft_isdigit(char c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
 }
 
-long handle_overflow(unsigned long result, int digit, int sign)
+long	handle_overflow(unsigned long result, int digit, int sign)
 {
 	unsigned long	cutoff;
-	int	cutlimit;
+	int				cutlimit;
 
 	if (sign == -1)
 		cutoff = -(unsigned long)LONG_MIN;
@@ -37,16 +47,16 @@ long handle_overflow(unsigned long result, int digit, int sign)
 	return (result);
 }
 
-long do_conversion(char *str, char **endptr, int i, int sign)
+long	do_conversion(char *str, char **endptr, int i, int sign)
 {
-	int	digit;
+	int				digit;
+	long			overflow;
 	unsigned long	result;
-	long	overflow;
 
 	result = 0;
 	while (ft_isdigit(str[i]))
 	{
-		digit = str[i] - '0'; 
+		digit = str[i] - '0';
 		overflow = handle_overflow(result, digit, sign);
 		if (overflow == LONG_MAX || overflow == LONG_MIN)
 		{
@@ -62,11 +72,11 @@ long do_conversion(char *str, char **endptr, int i, int sign)
 	return (result);
 }
 
-long ft_strtol(char *str, char **endptr)
+long	ft_strtol(char *str, char **endptr)
 {
 	long	result;
-	int	sign;
-	int	i;
+	int		sign;
+	int		i;
 
 	sign = 1;
 	i = 0;

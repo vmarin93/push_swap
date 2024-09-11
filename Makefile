@@ -1,4 +1,16 @@
-SRC = push_swap.c ft_strtol.c ft_stack.c hardcoded_sorts.c temp.c validate_input.c sort_stack.c
+SRC = aux.c \
+      ops_aux.c \
+      push_swap.c \
+      sort_aux1.c \
+      sort_aux2.c \
+      sort_size_3.c \
+      sort_size_4.c \
+      sort_size_5.c \
+      stack.c \
+      stack_ops.c \
+      sort_stack.c \
+      validate_input.c \
+      ft_strtol.c 
 OBJS := ${SRC:%.c=%.o}
 
 TEST_SRC = ./tests/validation_tests.c ./tests/main.c ./tests/sorting_tests.c ./tests/aux_func_tests.c

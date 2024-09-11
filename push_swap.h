@@ -6,110 +6,77 @@
 /*   By: vmarin <vmarin@student.42london.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:09:29 by vmarin            #+#    #+#             */
-/*   Updated: 2024/07/02 16:09:31 by vmarin           ###   ########.fr       */
+/*   Updated: 2024/09/11 10:38:32 by vmarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <limits.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <limits.h>
 
-typedef struct {
+typedef struct Stack
+{
 	int	*numbers;
 	int	top;
 	int	size;
-}Stack;
+}	t_Stack;
 
-typedef struct {
+typedef struct Box
+{
 	int	current_pair;
-	int	current_steps_a;
-	int	current_steps_b;
+	int	curr_a;
+	int	curr_b;
 	int	total_steps;
 	int	value_top_a;
 	int	value_top_b;
 	int	steps_top_a;
 	int	steps_top_b;
-}Box;
+}	t_Box;
 
-typedef struct {
+typedef struct Operations
+{
 	char	*ops[15000];
-	int	count;
-}Operations;
+	int		count;
+}	t_Operations;
 
-Stack *create_stack(int size);
-
-void free_stack(Stack *stack);
-
-int full_stack(const Stack *stack);
-
-int empty_stack(const Stack *stack);
-
-long peek(const Stack *stack);
-
-long push(Stack *stack, int number);
-
-long pop(Stack *stack);
-
-long stack_sum(Stack *stack);
-
-long swap_top(Stack *stack);
-
-long rotate_stack(Stack *stack);
-
-long rev_rotate_stack(Stack *stack);
-
-Stack *sort_stack(Stack *stack_a, Stack *stack_b, Operations *ops);
-
-Stack *sort_size_3(Stack *stack_a, Operations *ops);
-
-Stack *sort_size_4(Stack *stack_a, Stack *stack_b, Operations *ops);
-
-Stack *sort_size_5(Stack *stack_a, Stack *stack_b, Operations *ops);
-
-void push_to_b(Stack *stack_a, Stack *stack_b, Operations *ops);
-
-void fill_go_top_box(Stack *stack_a, Stack *stack_b, Box *go_top);
-
-void move_to_top_a(Stack *stack_a, Box *go_top, Operations *ops);
-
-void move_to_top_b(Stack *stack_b, Box *go_top, Operations *ops);
-
-int is_sorted(Stack *stack);
-
-int is_rev_sorted(Stack *stack);
-
-int find_largest(Stack *stack);
-
-int find_smallest(Stack *stack);
-
-int find_steps_to_top(Stack *stack, int value);
-
-int find_index(Stack *stack, int value);
-
-int find_pair(int value, Stack *stack);
-
-void register_ops(char *op, Operations *ops);
-
-void free_ops(Operations *ops);
-
-int ft_strlen(const char *str);
-
-int ft_strcmp(const char *str1, const char *str2);
-
-char *ft_strdup(char *str);
-
-long ft_strtol(char *str, char **endptr);
-
-void validate_input(int argc, char *argv[], Stack *stack_a);
-
-void fill_stack(int *input, int len, Stack *stack_a);
-
-int check_for_duplicates(int *input, int len);
-
-int *do_int_conversion(int argc, char *argv[]);
+t_Stack	*create_stack(int size);
+void	free_stack(t_Stack *stack);
+int		full_stack(const t_Stack *stack);
+int		empty_stack(const t_Stack *stack);
+long	peek(const t_Stack *stack);
+long	push(t_Stack *stack, int number);
+long	pop(t_Stack *stack);
+long	stack_sum(t_Stack *stack);
+long	swap_top(t_Stack *stack);
+long	rotate_stack(t_Stack *stack);
+long	rev_rotate_stack(t_Stack *stack);
+t_Stack	*sort_stack(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
+void	sort_size_3(t_Stack *stack_a, t_Operations *ops);
+void	sort_size_4(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
+void	sort_size_5(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
+void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
+void	fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top);
+void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops);
+void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops);
+int		is_sorted(t_Stack *stack);
+int		is_rev_sorted(t_Stack *stack);
+int		find_largest(t_Stack *stack);
+int		find_smallest(t_Stack *stack);
+int		find_steps_to_top(t_Stack *stack, int value);
+int		find_index(t_Stack *stack, int value);
+int		find_pair(int value, t_Stack *stack);
+void	register_ops(char *op, t_Operations *ops);
+void	print_ops(t_Operations *ops);
+void	free_ops(t_Operations *ops);
+int		ft_strlen(const char *str);
+int		ft_strcmp(const char *str1, const char *str2);
+char	*ft_strdup(char *str);
+long	ft_strtol(char *str, char **endptr);
+void	validate_input(int argc, char *argv[], t_Stack *stack_a);
+void	fill_stack(int *input, int len, t_Stack *stack_a);
 
 #endif

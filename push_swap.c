@@ -12,34 +12,23 @@
 
 #include "push_swap.h"
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	Stack	*stack_a;
-	Stack	*stack_b;
-	Operations	ops = {0};
+	t_Stack			*stack_a;
+	t_Stack			*stack_b;
+	t_Operations	ops;
 
+	ops.ops[0] = NULL;
+	ops.count = 0;
 	stack_a = create_stack(argc - 1);
 	if (stack_a == NULL)
 		return (1);
-	stack_b = create_stack(argc-1);
+	stack_b = create_stack(argc - 1);
 	if (stack_b == NULL)
 		return (1);
 	validate_input(argc, argv, stack_a);
 	sort_stack(stack_a, stack_b, &ops);
-	int	i = 0;
-	printf("\n");
-	while (i < ops.count)
-	{
-		printf("%s", ops.ops[i]);
-		i++;
-	}
-	printf("\nOp Count: %d \n", ops.count);
-	i = stack_a->top;
-	while (i >= 0)
-	{
-		printf("%d ", stack_a->numbers[i]);
-		i--;
-	}
+	print_ops(&ops);
 	free_stack(stack_a);
 	free_stack(stack_b);
 	free_ops(&ops);
