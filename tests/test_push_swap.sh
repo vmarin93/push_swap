@@ -15,7 +15,7 @@ generate_input() {
 for i in $(seq 1 $runs); do
     # Generate random input and run push_swap
     input=$(generate_input)
-    output=$(./push_swap $input)
+    output=$(../push_swap $input)
     
     # Count the number of operations (lines)
     count=$(echo "$output" | wc -l)
