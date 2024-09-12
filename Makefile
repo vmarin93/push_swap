@@ -1,5 +1,5 @@
 SRC = aux.c \
-      ops_aux.c \
+      ops.c \
       push_swap.c \
       sort_aux1.c \
       sort_aux2.c \
