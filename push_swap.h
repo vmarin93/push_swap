@@ -33,6 +33,8 @@ typedef struct Box
 	int	total_steps;
 	int	value_top_a;
 	int	value_top_b;
+	int	i_a;
+	int	i_b;
 	int	steps_top_a;
 	int	steps_top_b;
 }	t_Box;
@@ -60,6 +62,7 @@ void	sort_size_4(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
 void	sort_size_5(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
 void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
 void	fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top);
+void	m(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top, t_Operations *ops);
 void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops);
 void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops);
 int		is_sorted(t_Stack *stack);

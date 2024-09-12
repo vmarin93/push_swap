@@ -38,12 +38,35 @@ void	fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top)
 	}
 }
 
+void	m(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
+{
+	if ((stack_a->top / 2) <= go_top->i_a && (stack_b->top / 2) <= go_top->i_b)
+	{
+		while (go_top->steps_top_a && go_top->steps_top_b)
+		{
+			rotate_stack(stack_a);
+			rotate_stack(stack_b);
+			register_ops("rr\n", ops);
+			go_top->steps_top_a--;
+			go_top->steps_top_b--;
+		}
+	}
+	if ((stack_a->top / 2) > go_top->i_a && (stack_b->top / 2) > go_top->i_b)
+	{
+		while (go_top->steps_top_a && go_top->steps_top_b)
+		{
+			rev_rotate_stack(stack_a);
+			rev_rotate_stack(stack_b);
+			register_ops("rrr\n", ops);
+			go_top->steps_top_a--;
+			go_top->steps_top_b--;
+		}
+	}
+}
+
 void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops)
 {
-	int	value_index;
-
-	value_index = find_index(stack_a, go_top->value_top_a);
-	if ((stack_a->top / 2) <= value_index)
+	if ((stack_a->top / 2) <= go_top->i_a)
 	{
 		while (go_top->steps_top_a)
 		{
@@ -52,7 +75,7 @@ void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops)
 			go_top->steps_top_a--;
 		}
 	}
-	else if ((stack_a->top / 2) > value_index)
+	else if ((stack_a->top / 2) > go_top->i_a)
 	{
 		while (go_top->steps_top_a)
 		{
@@ -65,10 +88,7 @@ void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops)
 
 void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
 {
-	int	value_index;
-
-	value_index = find_index(stack_b, go_top->value_top_b);
-	if ((stack_b->top / 2) <= value_index)
+	if ((stack_b->top / 2) <= go_top->i_b)
 	{
 		while (go_top->steps_top_b)
 		{
@@ -77,7 +97,7 @@ void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
 			go_top->steps_top_b--;
 		}
 	}
-	else if ((stack_b->top / 2) > value_index)
+	else if ((stack_b->top / 2) > go_top->i_b)
 	{
 		while (go_top->steps_top_b)
 		{

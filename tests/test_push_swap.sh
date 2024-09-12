@@ -4,7 +4,7 @@
 total=0
 min=1000000  # Set to a high number initially
 max=0
-runs=500
+runs=1000
 
 # Function to generate random input
 generate_input() {

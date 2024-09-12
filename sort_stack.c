@@ -16,7 +16,7 @@ void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
 	long	average;
 
-	average = (stack_sum(stack_a) / (stack_a->top + 1));
+	average = (stack_sum(stack_a) / (stack_a->size));
 	while (stack_a->top >= 5)
 	{
 		if (peek(stack_a) > average)
@@ -40,8 +40,13 @@ void	push_to_a(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 	while (!empty_stack(stack_b))
 	{
 		fill_go_top_box(stack_a, stack_b, &go_top);
-		move_to_top_a(stack_a, &go_top, ops);
-		move_to_top_b(stack_b, &go_top, ops);
+		go_top.i_a = find_index(stack_a, go_top.value_top_a);
+		go_top.i_b = find_index(stack_b, go_top.value_top_b);
+		m(stack_a, stack_b, &go_top, ops);
+		if (go_top.steps_top_a > 0)
+			move_to_top_a(stack_a, &go_top, ops);
+		if (go_top.steps_top_b > 0)
+			move_to_top_b(stack_b, &go_top, ops);
 		push(stack_a, pop(stack_b));
 		register_ops("pa\n", ops);
 	}
