@@ -5,9 +5,12 @@ int main()
 {
 	// Run input validation tests
 	printf("\nValidation tests: \n");
-	test_do_int_conversion();
+	test_get_input();
+	test_get_input_len();
 	test_check_for_duplicates();
 	test_fill_stack();
+	test_fill_input_matrix();
+	test_validate_from_array();
 
 	// Run auxiliary functions tests
 	printf("\nAuxiliary functions tests: \n");
@@ -19,6 +22,7 @@ int main()
 	test_find_pair();
 	test_ft_strdup();
 	test_register_and_free_ops();
+	test_ft_split();
 	
 	// Run sorting tests
 	printf("\nSorting tests: \n");

@@ -6,7 +6,7 @@
 void	test_is_sorted()
 {
 	// Test for a sorted array
-	Stack	*test_stack = create_stack(5);
+	t_Stack	*test_stack = create_stack(5);
 	if (test_stack == NULL)
 		return;
 	int	sorted = -1;
@@ -35,7 +35,7 @@ void	test_is_sorted()
 
 void test_find_smallest()
 {
-	Stack	*test_stack = create_stack(5);
+	t_Stack	*test_stack = create_stack(5);
 	if (test_stack == NULL)
 		return;
 	int	smallest;
@@ -51,7 +51,7 @@ void test_find_smallest()
 
 void test_find_largest()
 {
-	Stack	*test_stack = create_stack(5);
+	t_Stack	*test_stack = create_stack(5);
 	if (test_stack == NULL)
 		return;
 	int	largest;
@@ -68,7 +68,7 @@ void test_find_largest()
 void test_find_steps_to_top()
 {
 	// Test number is at the top
-	Stack	*test_stack = create_stack(10);
+	t_Stack	*test_stack = create_stack(10);
 	if (test_stack == NULL)
 		return;
 	int	steps = -1;
@@ -92,7 +92,7 @@ void test_find_steps_to_top()
 
 void test_stack_sum()
 {
-	Stack	*test_stack = create_stack(5);
+	t_Stack	*test_stack = create_stack(5);
 	if (test_stack == NULL)
 		return;
 	int	sum = 0;
@@ -108,7 +108,7 @@ void test_stack_sum()
 
 void test_find_pair()
 {
-	Stack	*test_stack = create_stack(10);
+	t_Stack	*test_stack = create_stack(10);
 	if (test_stack == NULL)
 		return;
 	int	pair;
@@ -150,7 +150,7 @@ void test_ft_strdup()
 
 void test_register_and_free_ops()
 {
-	Operations	ops = {0};
+	t_Operations	ops = {0};
 	char	*op = "test_op";
 	int	i = 0;
 
@@ -173,4 +173,14 @@ void test_register_and_free_ops()
 	}
 	ASSERT(ops.count == 0, "Operation count was not reset to 0 after freeing");
 	TEST_PASS("test_register_and_free_ops");
+}
+
+void	test_ft_split()
+{
+	char	*str = "Hello World!";
+	char	*sub;
+
+	sub = ft_split(0, 5, str);
+	ASSERT(strcmp(sub, "Hello") == 0, "ft_split did not produce the correct sub_string");
+	TEST_PASS("test_ft_split");
 }

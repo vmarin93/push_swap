@@ -5,11 +5,11 @@
 
 void test_sort_size_2()
 {
-	Stack	*stack_a = create_stack(2);
-	Stack	*stack_b = create_stack(2);
+	t_Stack	*stack_a = create_stack(2);
+	t_Stack	*stack_b = create_stack(2);
 	if (stack_a == NULL || stack_b == NULL)
 		exit(1);
-	Operations ops = {0};
+	t_Operations ops = {0};
 
 	stack_a->numbers[0] = 42;
 	stack_a->numbers[1] = 43;
@@ -27,11 +27,11 @@ void test_sort_size_2()
 
 void test_sort_size_3()
 {
-	Stack	*stack_a = create_stack(3);
-	Stack	*stack_b = create_stack(3);
+	t_Stack	*stack_a = create_stack(3);
+	t_Stack	*stack_b = create_stack(3);
 	if (stack_a == NULL || stack_b == NULL)
 		exit(1);
-	Operations ops = {0};
+	t_Operations ops = {0};
 	
 	stack_a->numbers[0] = 75;
 	stack_a->numbers[1] = 56;
@@ -51,12 +51,12 @@ void test_sort_size_3()
 
 void test_sort_size_4()
 {
-	Stack	*stack_a = create_stack(4);
-	Stack	*stack_b = create_stack(4);
+	t_Stack	*stack_a = create_stack(4);
+	t_Stack	*stack_b = create_stack(4);
 	if (stack_a == NULL || stack_b == NULL)
 		exit(1);
 	;
-	Operations ops = {0};
+	t_Operations ops = {0};
 	int	i;
 	int	numbers[4] = {42, 67, 31, 84};
 	int	sorted_numbers[4] = {84, 67, 42, 31};
@@ -84,11 +84,11 @@ void test_sort_size_4()
 
 void test_sort_size_5()
 {
-	Stack	*stack_a = create_stack(5);
-	Stack	*stack_b = create_stack(5);
+	t_Stack	*stack_a = create_stack(5);
+	t_Stack	*stack_b = create_stack(5);
 	if (stack_a == NULL || stack_b == NULL)
 		exit(1);
-	Operations ops = {0};
+	t_Operations ops = {0};
 	int	i;
 	int	numbers[5] = {43, 89, 54, 12, 32};
 	int	sorted_numbers[5] = {89, 54, 43, 32, 12};
@@ -116,11 +116,11 @@ void test_sort_size_5()
 
 void test_push_to_b()
 {
-	Stack	*stack_a = create_stack(12);
-	Stack	*stack_b = create_stack(12);
+	t_Stack	*stack_a = create_stack(12);
+	t_Stack	*stack_b = create_stack(12);
 	if (stack_a == NULL || stack_b == NULL)
 		return;
-	Operations	ops = {0};
+	t_Operations	ops = {0};
 	int	i;
 	int	numbers[12] = {43, 12, 33, 65, 78, 91, 27, 88, 9, 15, 64, 75};
 	int	keepers[5] = {65, 78, 91, 88, 64};
@@ -144,9 +144,9 @@ void test_push_to_b()
 
 void test_fill_go_top_box()
 {
-	Box	go_top;
-	Stack	*stack_a = create_stack(12);
-	Stack	*stack_b = create_stack(12);
+	t_Box	go_top;
+	t_Stack	*stack_a = create_stack(12);
+	t_Stack	*stack_b = create_stack(12);
 	if (stack_a == NULL || stack_b == NULL)
 		return ;
 	int	numbers_a[5] = {64, 88, 91, 78, 65};
@@ -168,9 +168,9 @@ void test_fill_go_top_box()
 
 void test_move_to_top_a()
 {
-	Box	go_top;
-	Operations	ops = {0};
-	Stack	*stack_a = create_stack(5);
+	t_Box	go_top;
+	t_Operations	ops = {0};
+	t_Stack	*stack_a = create_stack(5);
 	if (stack_a == NULL)
 		return ;
 	int	numbers[5] = {64, 88, 91, 78, 65};
@@ -187,9 +187,9 @@ void test_move_to_top_a()
 
 void test_move_to_top_b()
 {
-	Box	go_top;
-	Operations	ops = {0};
-	Stack	*stack_b = create_stack(7);
+	t_Box	go_top;
+	t_Operations	ops = {0};
+	t_Stack	*stack_b = create_stack(7);
 	if (stack_b == NULL)
 		return ;
 	int	numbers[7] = {15, 9, 27, 33, 12, 43, 75};
@@ -207,11 +207,11 @@ void test_move_to_top_b()
 void test_sort_stack()
 {
 	int	i;
-	Stack	*stack_a = create_stack(12);
-	Stack	*stack_b = create_stack(12);
+	t_Stack	*stack_a = create_stack(12);
+	t_Stack	*stack_b = create_stack(12);
 	if (stack_a == NULL || stack_b == NULL)
 		return ;
-	Operations	ops = {0};
+	t_Operations	ops = {0};
 	int	numbers[12] = {43, 12, 33, 65, 78, 91, 27, 88, 9, 15, 64, 75};
 	int	sorted_numbers[12] = {91, 88, 78, 75, 65, 64, 43, 33, 27, 15, 12, 9};
 	fill_stack(numbers, 12, stack_a);

@@ -6,48 +6,11 @@
 /*   By: vmarin <vmarin@42london.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 10:23:29 by vmarin            #+#    #+#             */
-/*   Updated: 2024/09/11 10:24:42 by vmarin           ###   ########.fr       */
+/*   Updated: 2024/09/15 08:35:45 by vmarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <string.h>
-
-int	is_sorted(t_Stack *stack)
-{
-	int	value;
-	int	i;
-
-	if (!stack)
-		return (0);
-	value = stack->numbers[stack->top];
-	i = stack->size - 1;
-	while (i > 0)
-	{
-		if (stack->numbers[i - 1] < value)
-			return (0);
-		value = stack->numbers[i - 1];
-		i--;
-	}
-	return (1);
-}
-
-long	stack_sum(t_Stack *stack)
-{
-	long	sum;
-	int		i;
-
-	if (!stack)
-		return (0);
-	sum = 0;
-	i = stack->top;
-	while (i >= 0)
-	{
-		sum += stack->numbers[i];
-		i--;
-	}
-	return (sum);
-}
 
 int	ft_strlen(const char *str)
 {
@@ -91,4 +54,23 @@ int	ft_strcmp(const char *str1, const char *str2)
 		i++;
 	}
 	return (0);
+}
+
+char	*ft_split(int start, int end, char *str)
+{
+	char	*sub;
+	int	i;
+
+	sub = malloc((end - start) + 1);
+	if (sub == NULL)
+		return (NULL);
+	i = 0;
+	while (start < end)
+	{
+		sub[i] = str[start];
+		start++;
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
 }

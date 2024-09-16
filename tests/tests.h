@@ -23,29 +23,33 @@
 #define TEST_FAIL(test_name) printf(ANSI_COLOR_RED "FAIL: %s\n" ANSI_COLOR_RESET, test_name)
 
 // Validation tests
-void test_do_int_conversion();
-void test_check_for_duplicates();
-void test_fill_stack();
+void	test_get_input();
+void	test_get_input_len();
+void	test_check_for_duplicates();
+void	test_fill_stack();
+void	test_fill_input_matrix();
+void	test_validate_from_array();
 
 // Sorting tests
-void test_sort_size_2();
-void test_sort_size_3();
-void test_sort_size_4();
-void test_sort_size_5();
-void test_push_to_b();
-void test_fill_go_top_box();
-void test_move_to_top_a();
-void test_move_to_top_b();
-void test_sort_stack();
+void	test_sort_size_2();
+void	test_sort_size_3();
+void	test_sort_size_4();
+void	test_sort_size_5();
+void	test_push_to_b();
+void	test_fill_go_top_box();
+void	test_move_to_top_a();
+void	test_move_to_top_b();
+void	test_sort_stack();
 
 // Auxiliary functions tests
-void test_is_sorted();
-void test_find_smallest();
-void test_find_largest();
-void test_find_steps_to_top();
-void test_stack_sum();
-void test_find_pair();
-void test_ft_strdup();
-void test_register_and_free_ops();
+void	test_is_sorted();
+void	test_find_smallest();
+void	test_find_largest();
+void	test_find_steps_to_top();
+void	test_stack_sum();
+void	test_find_pair();
+void	test_ft_strdup();
+void	test_register_and_free_ops();
+void	test_ft_split();
 
 #endif

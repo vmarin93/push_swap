@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <limits.h>
 
 int	ft_isspace(char c)
 {
@@ -61,7 +62,7 @@ long	do_conversion(char *str, char **endptr, int i, int sign)
 		if (overflow == LONG_MAX || overflow == LONG_MIN)
 		{
 			if (endptr != NULL)
-				*endptr = (char *)&str[i];
+				*endptr = &str[i];
 			return (overflow);
 		}
 		result = result * 10 + digit;
@@ -91,8 +92,8 @@ long	ft_strtol(char *str, char **endptr)
 	if (!ft_isdigit(str[i]))
 	{
 		if (endptr != NULL)
-			*endptr = (char *)&str[i];
-		return (0);
+			*endptr = &str[i];
+		return (LONG_MAX);
 	}
 	result = do_conversion(str, endptr, i, sign);
 	return (result * sign);

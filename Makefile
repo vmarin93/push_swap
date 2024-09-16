@@ -8,8 +8,10 @@ SRC = aux.c \
       sort_size_5.c \
       stack.c \
       stack_ops.c \
+      stack_aux.c \
       sort_stack.c \
       validate_input.c \
+      validate_input_aux.c \
       ft_strtol.c 
 OBJS := ${SRC:%.c=%.o}
 

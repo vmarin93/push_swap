@@ -17,13 +17,18 @@ int	main(int argc, char *argv[])
 	t_Stack			*stack_a;
 	t_Stack			*stack_b;
 	t_Operations	ops;
+	int				len;
 
 	ops.ops[0] = NULL;
 	ops.count = 0;
-	stack_a = create_stack(argc - 1);
+	if (argc == 2)
+		len = get_input_len(argv[1]);
+	else
+		len = argc - 1;
+	stack_a = create_stack(len);
 	if (stack_a == NULL)
 		return (1);
-	stack_b = create_stack(argc - 1);
+	stack_b = create_stack(len);
 	if (stack_b == NULL)
 		return (1);
 	validate_input(argc, argv, stack_a);
