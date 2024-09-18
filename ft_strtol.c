@@ -33,9 +33,9 @@ long	handle_overflow(unsigned long result, int digit, int sign)
 	int				cutlimit;
 
 	if (sign == -1)
-		cutoff = -(unsigned long)LONG_MIN;
+		cutoff = -(unsigned int)INT_MIN;
 	else
-		cutoff = LONG_MAX;
+		cutoff = INT_MAX;
 	cutlimit = cutoff % 10;
 	cutoff /= 10;
 	if (result > cutoff || (result == cutoff && digit > cutlimit))

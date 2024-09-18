@@ -47,3 +47,21 @@ long	stack_sum(t_Stack *stack)
 	}
 	return (sum);
 }
+
+void	fill_stack(int *input, int len, t_Stack *stack_a)
+{
+	int	i;
+
+	i = len - 1;
+	while (i >= 0)
+	{
+		push(stack_a, input[i]);
+		i--;
+	}
+	if (stack_a == NULL)
+	{
+		write(2, "Error\n", 6);
+		free(input);
+		exit(1);
+	}
+}

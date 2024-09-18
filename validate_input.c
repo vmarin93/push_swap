@@ -65,29 +65,10 @@ int	check_for_duplicates(int *input, int len)
 	return (0);
 }
 
-void	fill_stack(int *input, int len, t_Stack *stack_a)
-{
-	int	i;
-
-	i = len - 1;
-	while (i >= 0)
-	{
-		push(stack_a, input[i]);
-		i--;
-	}
-	if (stack_a == NULL)
-	{
-		write(2, "Error\n", 6);
-		free(input);
-		exit(1);
-	}
-}
-
-
 int	*validate_from_array(char *argv1, int len)
 {
-	int	*input;
-	int	i;
+	int		*input;
+	int		i;
 	char	**input_matrix;
 
 	input_matrix = fill_input_matrix(argv1, len);

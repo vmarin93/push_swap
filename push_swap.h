@@ -100,6 +100,6 @@ int		*single_string_input(char *input_string, int len);
 long	do_int_conversion(char *arg, int *input);
 char	**fill_input_matrix(char *input_string, int len);
 void	free_input_matrix(char **input_matrix);
-int	*validate_from_array(char *argv1, int len);
+int		*validate_from_array(char *argv1, int len);
 
 #endif

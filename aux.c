@@ -59,7 +59,7 @@ int	ft_strcmp(const char *str1, const char *str2)
 char	*ft_split(int start, int end, char *str)
 {
 	char	*sub;
-	int	i;
+	int		i;
 
 	sub = malloc((end - start) + 1);
 	if (sub == NULL)

@@ -21,8 +21,8 @@ int	get_input_len(char *str)
 	len = 0;
 	while (str[i] != '\0')
 	{
-		if (ft_isspace(str[i] ) || str[i + 1] == '\0')
-				len++;
+		if (ft_isspace(str[i]) || str[i + 1] == '\0')
+			len++;
 		i++;
 	}
 	return (len);
@@ -41,7 +41,7 @@ void	free_input_matrix(char **input_matrix)
 	free(input_matrix);
 }
 
-void	parse_input_string(int start, int end, char *input_string, char **input_matrix)
+void	parse(int start, int end, char *input_string, char **input_matrix)
 {
 	int	i;
 	int	k;
@@ -69,8 +69,8 @@ void	parse_input_string(int start, int end, char *input_string, char **input_mat
 
 char	**fill_input_matrix(char *input_string, int len)
 {
-	int	start;
-	int	end;
+	int		start;
+	int		end;
 	char	**input_matrix;
 
 	input_matrix = malloc(sizeof(char *) * (len + 1));
@@ -78,6 +78,6 @@ char	**fill_input_matrix(char *input_string, int len)
 		return (NULL);
 	start = 0;
 	end = 0;
-	parse_input_string(start, end, input_string, input_matrix);
+	parse(start, end, input_string, input_matrix);
 	return (input_matrix);
 }
