@@ -85,9 +85,8 @@ int	*validate_from_array(char *argv1, int len)
 	return (input);
 }
 
-void	validate_input(int argc, char *argv[], t_Stack *stack_a)
+void	validate_input(int argc, char *argv[], int **input)
 {
-	int	*input;
 	int	len;
 	int	duplicates;
 
@@ -96,20 +95,18 @@ void	validate_input(int argc, char *argv[], t_Stack *stack_a)
 	if (argc == 2)
 	{
 		len = get_input_len(argv[1]);
-		input = validate_from_array(argv[1], len);
+		*input = validate_from_array(argv[1], len);
 	}
 	else
 	{
 		len = argc - 1;
-		input = get_input(argc, argv);
+		*input = get_input(argc, argv);
 	}
-	duplicates = check_for_duplicates(input, len);
+	duplicates = check_for_duplicates(*input, len);
 	if (duplicates)
 	{
 		write(2, "Error\n", 6);
-		free(input);
+		free(*input);
 		exit (1);
 	}
-	fill_stack(input, len, stack_a);
-	free(input);
 }

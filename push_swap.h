@@ -92,7 +92,7 @@ long	ft_strtol(char *str, char **endptr);
 char	*ft_split(int start, int end, char *str);
 
 // Input Validation Functions
-void	validate_input(int argc, char *argv[], t_Stack *stack_a);
+void	validate_input(int argc, char *argv[], int **input);
 int		check_for_duplicates(int *input, int len);
 int		get_input_len(char *input_string);
 int		*get_input(int argc, char *argv[]);
