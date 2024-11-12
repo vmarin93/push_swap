@@ -27,16 +27,16 @@ typedef struct Stack
 
 typedef struct Box
 {
-	int	current_pair;
-	int	curr_a;
-	int	curr_b;
-	int	total_steps;
-	int	value_top_a;
-	int	value_top_b;
-	int	i_a;
-	int	i_b;
-	int	steps_top_a;
-	int	steps_top_b;
+	long	current_pair;
+	long	curr_a;
+	long	curr_b;
+	long	total_steps;
+	int		value_top_a;
+	int		value_top_b;
+	int		i_a;
+	int		i_b;
+	int		steps_top_a;
+	int		steps_top_b;
 }	t_Box;
 
 typedef struct Operations
@@ -67,7 +67,7 @@ void	sort_size_3(t_Stack *stack_a, t_Operations *ops);
 void	sort_size_4(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
 void	sort_size_5(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
 void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops);
-void	fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top);
+int		fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top);
 void	m(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top, t_Operations *ops);
 void	move_to_top_a(t_Stack *stack_a, t_Box *go_top, t_Operations *ops);
 void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops);
@@ -75,7 +75,9 @@ int		find_largest(t_Stack *stack);
 int		find_smallest(t_Stack *stack);
 int		find_steps_to_top(t_Stack *stack, int value);
 int		find_index(t_Stack *stack, int value);
-int		find_pair(int value, t_Stack *stack);
+long		find_pair(int value, t_Stack *stack);
+long		get_average(t_Stack *stack);
+void	bring_largest_to_bottom(t_Stack *stack_a, t_Operations *ops);
 
 // Operations Functions
 void	register_ops(char *op, t_Operations *ops);

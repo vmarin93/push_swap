@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <limits.h>
 
 void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 {
 	long	average;
 
-	average = (stack_sum(stack_a) / (stack_a->size));
+	average = get_average(stack_a);
 	while (stack_a->top >= 5)
 	{
 		if (peek(stack_a) > average)
@@ -28,7 +29,7 @@ void	push_to_b(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 		{
 			push(stack_b, pop(stack_a));
 			register_ops("pb\n", ops);
-			average = (stack_sum(stack_a) / (stack_a->top + 1));
+			average = get_average(stack_a);
 		}
 	}
 }
@@ -51,6 +52,7 @@ void	push_to_a(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 		register_ops("pa\n", ops);
 	}
 }
+
 
 void	bring_largest_to_bottom(t_Stack *stack_a, t_Operations *ops)
 {

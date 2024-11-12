@@ -1,18 +1,18 @@
 #include "tests.h"
 #include "../push_swap.h"
-#include <assert.h>
 #include <string.h>
 
 void test_get_input()
 {
-	char	*argv[] = {"program", "10", "20", "30"};
-	int	argc = 4;
+	char	*argv[] = {"program", "10", "20", "-30", "-5"};
+	int	argc = 5;
 	int	*result = get_input(argc, argv);
 
 	ASSERT(result != NULL, "do_int_conversion should return a non-null pointer");
 	ASSERT(result[0] == 10, "First element should be 10");
 	ASSERT(result[1] == 20, "Second element should be 20");
-	ASSERT(result[2] == 30, "Third element should be 30");
+	ASSERT(result[2] == -30, "Third element should be -30");
+	ASSERT(result[3] == -5, "Third element should be -5");
 	free(result);
 	TEST_PASS("test_do_int_conversion");
 }
@@ -64,7 +64,7 @@ void test_check_for_duplicates()
 {
 	int	duplicates_middle[7] = {1, 5, 10, 23, 46, 5, 7};
 	int	duplicates_front[7] = {1, 1, 5, 23, 46, 10, 7};
-	int	duplicates_end[7] = {1, 5, 10, 23, 46, 7, 7};
+	int	duplicates_end[7] = {1, 5, 10, 23, 46, -7, -7};
 	int	no_duplicates[7] = {1, 5, 10, 23, 46, 99, 7};
 	int	result;
 
@@ -84,8 +84,8 @@ void test_fill_stack()
 	t_Stack	*test_stack = create_stack(10);
 	if (test_stack == NULL)
 		exit(1);
-	int	numbers[10] = {3, 8, 43, 24, 88, 94, 27, 56, 47, 12};
-	int	rev_numbers[10] = {12, 47, 56, 27, 94, 88, 24, 43, 8, 3};
+	int	numbers[10] = {3, 8, 43, 24, -88, 94, 27, -56, 47, 12};
+	int	rev_numbers[10] = {12, 47, -56, 27, 94, -88, 24, 43, 8, 3};
 	int	result;
 
 	fill_stack(numbers, 10, test_stack);

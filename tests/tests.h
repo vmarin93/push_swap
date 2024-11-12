@@ -35,6 +35,7 @@ void	test_sort_size_2();
 void	test_sort_size_3();
 void	test_sort_size_4();
 void	test_sort_size_5();
+void	test_bring_largest_to_bottom();
 void	test_push_to_b();
 void	test_fill_go_top_box();
 void	test_move_to_top_a();

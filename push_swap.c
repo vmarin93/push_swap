@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
 void	create_stacks(t_Stack **stack_a, t_Stack **stack_b, int len)
 {
@@ -36,6 +37,8 @@ int	main(int argc, char *argv[])
 	int				len;
 	int				*input;
 
+	if (argc == 1)
+		return (0);
 	ops.ops[0] = NULL;
 	ops.count = 0;
 	input = NULL;

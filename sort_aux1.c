@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <limits.h>
 
 int	find_largest(t_Stack *stack)
 {
@@ -53,7 +54,7 @@ int	find_index(t_Stack *stack, int value)
 	int	index;
 
 	index = 0;
-	while (index <= stack->top)
+	while (index < stack->top)
 	{
 		if (stack->numbers[index] == value)
 			return (index);
@@ -80,33 +81,37 @@ int	find_steps_to_top(t_Stack *stack, int value)
 		steps++;
 		i--;
 	}
-	if (steps <= (stack->top / 2))
+	if (steps <= ((stack->top + 1) / 2))
 		return (steps);
 	else
 		return (stack->top - steps + 1);
 	return (-1);
 }
 
-int	find_pair(int value, t_Stack *stack)
+long	find_pair(int value, t_Stack *stack)
 {
-	int	pair;
-	int	i;
-	int	perfect_pairing;
+	long	pair;
+	long	i;
+	long	smallest_diff;
+	long	diff;
 
 	if (!stack)
-		return (-1);
-	pair = -1;
-	perfect_pairing = INT_MAX;
-	i = stack->top;
-	while (i >= 0)
+		return (LONG_MIN);
+	pair = LONG_MAX;
+	smallest_diff = LONG_MAX;
+	i = 0;
+	while (i <= stack->top)
 	{
-		if (stack->numbers[i] > value
-			&& ((stack->numbers[i] - value) < perfect_pairing))
+		if (stack->numbers[i] > value)
 		{
-			pair = stack->numbers[i];
-			perfect_pairing = stack->numbers[i] - value;
+			diff = (long)stack->numbers[i] - value;
+			if (diff < smallest_diff)
+			{
+				smallest_diff = diff;
+				pair = stack->numbers[i];
+			}
 		}
-		i--;
+		i++;
 	}
 	return (pair);
 }

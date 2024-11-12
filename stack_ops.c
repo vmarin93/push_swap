@@ -23,10 +23,14 @@ long	push(t_Stack *stack, int number)
 
 long	pop(t_Stack *stack)
 {
+	long	value;
+
 	if (empty_stack(stack))
 		return (LONG_MAX);
 	stack->top--;
-	return (stack->numbers[stack->top + 1]);
+	value = stack->numbers[stack->top + 1];
+	stack->numbers[stack->top + 1] = 0;
+	return (value);
 }
 
 long	swap_top(t_Stack *stack)

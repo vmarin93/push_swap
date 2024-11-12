@@ -33,7 +33,7 @@ long	handle_overflow(unsigned long result, int digit, int sign)
 	int				cutlimit;
 
 	if (sign == -1)
-		cutoff = -(unsigned int)INT_MIN;
+		cutoff = -(long)INT_MIN;
 	else
 		cutoff = INT_MAX;
 	cutlimit = cutoff % 10;
