@@ -75,8 +75,8 @@ int		find_largest(t_Stack *stack);
 int		find_smallest(t_Stack *stack);
 int		find_steps_to_top(t_Stack *stack, int value);
 int		find_index(t_Stack *stack, int value);
-long		find_pair(int value, t_Stack *stack);
-long		get_average(t_Stack *stack);
+long	find_pair(int value, t_Stack *stack);
+long	get_average(t_Stack *stack);
 void	bring_largest_to_bottom(t_Stack *stack_a, t_Operations *ops);
 
 // Operations Functions
@@ -103,5 +103,6 @@ long	do_int_conversion(char *arg, int *input);
 char	**fill_input_matrix(char *input_string, int len);
 void	free_input_matrix(char **input_matrix);
 int		*validate_from_array(char *argv1, int len);
+int		has_digits(char *argv1);
 
 #endif

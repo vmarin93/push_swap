@@ -17,10 +17,6 @@ int	fill_go_top_box(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top)
 {
 	int	i;
 
-	go_top->value_top_a = 0;
-	go_top->value_top_b = 0;
-	go_top->steps_top_a = 0;
-	go_top->steps_top_b = 0;
 	go_top->total_steps = INT_MAX;
 	i = stack_b->top;
 	while (i >= 0)
@@ -49,7 +45,8 @@ void	m(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
 {
 	while (go_top->steps_top_a && go_top->steps_top_b)
 	{
-		if ((stack_a->top / 2) <= go_top->i_a && (stack_b->top / 2 <= go_top->i_b))
+		if ((stack_a->top / 2) <= go_top->i_a
+			&& (stack_b->top / 2 <= go_top->i_b))
 		{
 			rotate_stack(stack_a);
 			rotate_stack(stack_b);
@@ -57,7 +54,8 @@ void	m(t_Stack *stack_a, t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
 			go_top->steps_top_a--;
 			go_top->steps_top_b--;
 		}
-		else if ((stack_a->top / 2) > go_top->i_a && (stack_b->top / 2 >go_top->i_b))
+		else if ((stack_a->top / 2) > go_top->i_a
+			&& (stack_b->top / 2 > go_top->i_b))
 		{
 			rev_rotate_stack(stack_a);
 			rev_rotate_stack(stack_b);
@@ -108,11 +106,12 @@ void	move_to_top_b(t_Stack *stack_b, t_Box *go_top, t_Operations *ops)
 	}
 }
 
-long	get_average(t_Stack *stack) 
+long	get_average(t_Stack *stack)
 {
-	long	sum = 0;
-	int	i;
+	long	sum;
+	int		i;
 
+	sum = 0;
 	i = 0;
 	while (i <= stack->top)
 	{

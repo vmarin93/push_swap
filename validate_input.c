@@ -71,6 +71,13 @@ int	*validate_from_array(char *argv1, int len)
 	int		i;
 	char	**input_matrix;
 
+	if (len == 0)
+		exit(0);
+	if (!has_digits(argv1))
+	{
+		write(2, "Error\n", 6);
+		exit(1);
+	}
 	input_matrix = fill_input_matrix(argv1, len);
 	input = malloc(sizeof(int) * len);
 	if (input == NULL)

@@ -53,7 +53,6 @@ void	push_to_a(t_Stack *stack_a, t_Stack *stack_b, t_Operations *ops)
 	}
 }
 
-
 void	bring_largest_to_bottom(t_Stack *stack_a, t_Operations *ops)
 {
 	int	largest;

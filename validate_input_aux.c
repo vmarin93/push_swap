@@ -81,3 +81,17 @@ char	**fill_input_matrix(char *input_string, int len)
 	parse(start, end, input_string, input_matrix);
 	return (input_matrix);
 }
+
+int	has_digits(char *argv1)
+{
+	int	i;
+
+	i = 0;
+	while (argv1[i] != '\0')
+	{
+		if (argv1[i] >= '0' && argv1[i] <= '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}

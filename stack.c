@@ -32,11 +32,6 @@ t_Stack	*create_stack(int size)
 	}
 	stack->top = -1;
 	stack->size = size;
-	while (size >= 0)
-	{
-		size--;
-		stack->numbers[size] = 0;
-	}
 	return (stack);
 }
 
